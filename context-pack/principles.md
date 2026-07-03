@@ -5,6 +5,9 @@ title: pwcli-core First Principles
 summary: Core design principles for intent-driven dual-engine applications.
 status: active
 version: 1.0.0
+domain: architecture
+maturity: pattern_only
+provenance: repo-authored public scaffold
 scope: public specification
 sensitivity: public
 tags:

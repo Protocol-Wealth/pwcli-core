@@ -5,6 +5,9 @@ title: pwcli-core Architecture Graph
 summary: Lightweight graph of the main architectural nodes and relationships.
 status: active
 version: 1.0.0
+domain: architecture
+maturity: pattern_only
+provenance: repo-authored public scaffold
 scope: public specification
 sensitivity: public
 tags:

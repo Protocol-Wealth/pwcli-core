@@ -20,7 +20,11 @@ custom schemas.
 - [Route schema](schemas/route.schema.json): Static fallback route map.
 - [Execution schema](schemas/execution.schema.json): Sandboxed execution metadata.
 - [Source schema](schemas/source.schema.json): Source record, metadata, and provenance fields.
+- [Provenance schema](schemas/provenance.schema.json): W3C PROV-O-aligned provenance record.
+- [Rights schema](schemas/rights.schema.json): SPDX-compatible rights and license metadata.
 - [Crosswalk schema](schemas/crosswalk.schema.json): Explicit standards translation mappings.
+- [Context-pack schema](schemas/context-pack.schema.json): Markdown frontmatter convention.
+- [Agent-card-lite schema](schemas/agent-card-lite.schema.json): Minimal A2A-inspired delegation profile.
 
 ## Docs
 
@@ -30,6 +34,7 @@ custom schemas.
 - [Agent interop](docs/agent-interop.md): MCP and A2A guidance.
 - [Context packs](docs/context-packs.md): Markdown frontmatter operating context pattern.
 - [Companion projects](docs/companion-projects.md): Related Protocol Wealth open-source references.
+- [Validation](docs/validation.md): Local and CI checks for schemas, crosswalks, context packs, links, metadata, and hygiene.
 
 ## Companion References
 

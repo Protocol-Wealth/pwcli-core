@@ -39,6 +39,16 @@ Crosswalks must be explicit. Each mapping should state:
 - whether the mapping is lossy;
 - whether human review is required.
 
+## Validation
+
+Run before opening a pull request:
+
+```bash
+npm run validate
+```
+
+If validation fails, fix the reported file and message directly. The validator is intentionally dependency-free and should stay small unless a future PR explicitly adds a full schema validation dependency.
+
 ## Style
 
 - Use plain Markdown and JSON.

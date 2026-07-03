@@ -10,7 +10,12 @@
     "type",
     "title",
     "status",
-    "version"
+    "version",
+    "domain",
+    "maturity",
+    "provenance",
+    "sensitivity",
+    "lastReviewed"
   ],
   "properties": {
     "id": {
@@ -73,6 +78,26 @@
     "lastReviewed": {
       "type": "string",
       "format": "date"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Primary domain or layer described by this context file."
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "stable_standard",
+        "open_protocol",
+        "community_standard",
+        "emerging_convention",
+        "experimental",
+        "local_pattern",
+        "pattern_only"
+      ]
+    },
+    "provenance": {
+      "type": "string",
+      "description": "Human-readable source or authorship note for the context file."
     }
   }
 }

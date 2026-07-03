@@ -21,7 +21,11 @@ type: specification_docs
 title: pwcli-core First Principles
 status: active
 version: 1.0.0
+domain: architecture
+maturity: pattern_only
+provenance: repo-authored public scaffold
 sensitivity: public
+lastReviewed: 2026-07-03
 ```
 
 ## Rules
