@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/primitive.schema.json",
+  "title": "pwcli-core Elastic Primitive",
+  "description": "Registered UI primitive that can be selected by intent but is never generated live by a model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "summary",
+    "domain",
+    "kind",
+    "status",
+    "allowedIntents",
+    "fallbackRoute",
+    "sideEffectLevel",
+    "approvalRequired",
+    "publicSafe"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "panel",
+        "card",
+        "chart",
+        "form",
+        "list",
+        "timeline",
+        "document_viewer",
+        "graph",
+        "wizard"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "beta",
+        "legacy",
+        "hidden",
+        "disabled"
+      ]
+    },
+    "allowedIntents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "inputSchemaRef": {
+      "type": "string"
+    },
+    "outputModes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "text/markdown"
+      ]
+    },
+    "fallbackRoute": {
+      "type": "string",
+      "pattern": "^/[A-Za-z0-9_./:-]*$"
+    },
+    "sideEffectLevel": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "idempotent_mutation",
+        "state_change"
+      ]
+    },
+    "approvalRequired": {
+      "type": "boolean"
+    },
+    "sourceRequirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "supportsReturnFocus": {
+      "type": "boolean",
+      "default": true
+    },
+    "publicSafe": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

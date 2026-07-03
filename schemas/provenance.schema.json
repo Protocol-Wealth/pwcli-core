@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/provenance.schema.json",
+  "title": "pwcli-core Provenance Record",
+  "description": "Small JSON shape aligned with W3C PROV-O concepts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entityId",
+    "activityId",
+    "agentId",
+    "generatedAtTime"
+  ],
+  "properties": {
+    "entityId": {
+      "type": "string",
+      "description": "PROV entity identifier."
+    },
+    "activityId": {
+      "type": "string",
+      "description": "PROV activity identifier."
+    },
+    "agentId": {
+      "type": "string",
+      "description": "PROV agent identifier."
+    },
+    "wasGeneratedBy": {
+      "type": "string"
+    },
+    "wasDerivedFrom": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "wasAttributedTo": {
+      "type": "string"
+    },
+    "used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "startedAtTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "endedAtTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedAtTime": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

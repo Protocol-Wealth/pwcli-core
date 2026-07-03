@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/source.schema.json",
+  "title": "pwcli-core Source Record",
+  "description": "Source metadata container preserving identifiers, rights, provenance, and raw references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "sourceType",
+    "protocol",
+    "sourceIdentifier",
+    "retrievedAt",
+    "rights",
+    "rawRecordRef",
+    "assertionLayer"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "sourceType": {
+      "type": "string",
+      "enum": [
+        "api",
+        "archive",
+        "dataset",
+        "document",
+        "web_page",
+        "repository",
+        "manual_entry"
+      ]
+    },
+    "protocol": {
+      "type": "string",
+      "examples": [
+        "oai-pmh",
+        "iiif",
+        "openapi",
+        "json-ld",
+        "manual"
+      ]
+    },
+    "metadataFormat": {
+      "type": "string",
+      "examples": [
+        "oai_dc",
+        "dcterms",
+        "marc21",
+        "schema.org"
+      ]
+    },
+    "sourceIdentifier": {
+      "type": "string"
+    },
+    "sourceUrl": {
+      "type": "string"
+    },
+    "retrievedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rights": {
+      "$ref": "./rights.schema.json"
+    },
+    "provenanceRef": {
+      "type": "string"
+    },
+    "rawRecordRef": {
+      "type": "string"
+    },
+    "assertionLayer": {
+      "type": "string",
+      "enum": [
+        "descriptive_source_metadata",
+        "interpretive_ai_output"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "humanReviewState": {
+      "type": "string",
+      "enum": [
+        "not_required",
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    }
+  }
+}

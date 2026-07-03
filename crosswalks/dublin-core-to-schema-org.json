@@ -1,0 +1,50 @@
+{
+  "id": "dublin-core-to-schema-org",
+  "sourceSchema": "Dublin Core / DCMI Terms",
+  "targetSchema": "schema.org CreativeWork",
+  "maturity": "stable_standard",
+  "mappings": [
+    {
+      "sourcePath": "dc:title",
+      "targetPath": "name",
+      "transform": "copy literal",
+      "lossiness": "none",
+      "humanReviewRequired": false
+    },
+    {
+      "sourcePath": "dc:creator",
+      "targetPath": "creator.name",
+      "transform": "copy creator label as Person or Organization candidate",
+      "lossiness": "medium",
+      "humanReviewRequired": true
+    },
+    {
+      "sourcePath": "dc:description",
+      "targetPath": "description",
+      "transform": "copy literal",
+      "lossiness": "none",
+      "humanReviewRequired": false
+    },
+    {
+      "sourcePath": "dc:identifier",
+      "targetPath": "identifier",
+      "transform": "copy literal or URI",
+      "lossiness": "none",
+      "humanReviewRequired": false
+    },
+    {
+      "sourcePath": "dc:rights",
+      "targetPath": "usageInfo",
+      "transform": "copy rights statement URL or text",
+      "lossiness": "low",
+      "humanReviewRequired": true
+    },
+    {
+      "sourcePath": "dcterms:license",
+      "targetPath": "license",
+      "transform": "copy license URL or SPDX expression when available",
+      "lossiness": "low",
+      "humanReviewRequired": true
+    }
+  ]
+}

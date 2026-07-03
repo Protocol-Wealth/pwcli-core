@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/agent-card-lite.schema.json",
+  "title": "pwcli-core Agent Card Lite",
+  "description": "Minimal A2A-inspired descriptive profile for delegation-capable agents.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "description",
+    "provider",
+    "skills",
+    "publicSafe"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organization",
+        "url"
+      ],
+      "properties": {
+        "organization": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "description",
+          "sideEffectLevel"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "sideEffectLevel": {
+            "type": "string",
+            "enum": [
+              "read_only",
+              "idempotent_mutation",
+              "state_change"
+            ]
+          },
+          "approvalRequired": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "protocolBinding"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "protocolBinding": {
+            "type": "string"
+          }
+        }
+      },
+      "default": []
+    },
+    "securityRequirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "publicSafe": {
+      "type": "boolean"
+    }
+  }
+}

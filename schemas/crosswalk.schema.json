@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/crosswalk.schema.json",
+  "title": "pwcli-core Metadata Crosswalk",
+  "description": "Explicit mapping between source and target schemas.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "sourceSchema",
+    "targetSchema",
+    "maturity",
+    "mappings"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "sourceSchema": {
+      "type": "string"
+    },
+    "targetSchema": {
+      "type": "string"
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "stable_standard",
+        "open_protocol",
+        "community_standard",
+        "emerging_convention",
+        "experimental",
+        "pattern_only"
+      ]
+    },
+    "mappings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourcePath",
+          "targetPath",
+          "transform",
+          "lossiness",
+          "humanReviewRequired"
+        ],
+        "properties": {
+          "sourcePath": {
+            "type": "string"
+          },
+          "targetPath": {
+            "type": "string"
+          },
+          "transform": {
+            "type": "string"
+          },
+          "lossiness": {
+            "type": "string",
+            "enum": [
+              "none",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "humanReviewRequired": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
