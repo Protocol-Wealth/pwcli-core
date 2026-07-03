@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/route.schema.json",
+  "title": "pwcli-core Static Route",
+  "description": "Deterministic fallback route exposed by the static bedrock.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "path",
+    "title",
+    "domain",
+    "staticBedrock",
+    "authRequired"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^/[A-Za-z0-9_./:-]*$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "staticBedrock": {
+      "type": "boolean",
+      "const": true
+    },
+    "authRequired": {
+      "type": "boolean"
+    },
+    "allowedMethods": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "GET",
+          "POST",
+          "PUT",
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      "default": [
+        "GET"
+      ]
+    },
+    "panels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "fallbackForIntents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  }
+}

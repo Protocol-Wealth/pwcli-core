@@ -1,0 +1,48 @@
+{
+  "id": "dublin-core-to-marc21",
+  "sourceSchema": "Dublin Core / OAI-DC",
+  "targetSchema": "MARC 21 Bibliographic",
+  "maturity": "stable_standard",
+  "mappings": [
+    {
+      "sourcePath": "dc:title",
+      "targetPath": "245$a",
+      "transform": "copy literal title string",
+      "lossiness": "low",
+      "humanReviewRequired": true,
+      "notes": "Title statement punctuation and non-filing indicators require cataloger review."
+    },
+    {
+      "sourcePath": "dc:creator",
+      "targetPath": "100$a",
+      "transform": "copy primary creator as personal/corporate name candidate",
+      "lossiness": "medium",
+      "humanReviewRequired": true,
+      "notes": "Authority control and name type must be reviewed."
+    },
+    {
+      "sourcePath": "dc:relation",
+      "targetPath": "533$a",
+      "transform": "map reproduction/source relation when relation describes reproduction context",
+      "lossiness": "high",
+      "humanReviewRequired": true,
+      "notes": "Use only when relation semantics fit reproduction note usage."
+    },
+    {
+      "sourcePath": "dc:rights",
+      "targetPath": "540$a",
+      "transform": "copy rights/access terms",
+      "lossiness": "low",
+      "humanReviewRequired": true,
+      "notes": "Rights statements should preserve source wording."
+    },
+    {
+      "sourcePath": "dc:identifier",
+      "targetPath": "024$a",
+      "transform": "copy standard identifier candidate",
+      "lossiness": "medium",
+      "humanReviewRequired": true,
+      "notes": "Identifier type and indicator values require review."
+    }
+  ]
+}

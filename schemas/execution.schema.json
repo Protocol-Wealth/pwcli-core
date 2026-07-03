@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/execution.schema.json",
+  "title": "pwcli-core Execution Target",
+  "description": "Typed execution metadata for tools, APIs, jobs, and sandboxed modules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "sideEffectLevel",
+    "approvalRequired",
+    "auditRequired"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_:-]*$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "wasm",
+        "mcp",
+        "typed_api",
+        "backend_job",
+        "manual"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "sideEffectLevel": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "idempotent_mutation",
+        "state_change"
+      ]
+    },
+    "approvalRequired": {
+      "type": "boolean"
+    },
+    "inputSchemaRef": {
+      "type": "string"
+    },
+    "outputSchemaRef": {
+      "type": "string"
+    },
+    "sandbox": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "network": {
+          "type": "string",
+          "enum": [
+            "none",
+            "allowlist",
+            "unrestricted"
+          ]
+        },
+        "filesystem": {
+          "type": "string",
+          "enum": [
+            "none",
+            "read_only",
+            "workspace_write",
+            "unrestricted"
+          ]
+        }
+      }
+    },
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "auditRequired": {
+      "type": "boolean",
+      "const": true
+    }
+  }
+}

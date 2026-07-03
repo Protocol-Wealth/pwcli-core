@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/rights.schema.json",
+  "title": "pwcli-core Rights Metadata",
+  "description": "Rights, access, and reuse metadata with SPDX-compatible license expression support.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "reuseAllowed",
+    "humanReviewRequired"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "restricted",
+        "unknown",
+        "private",
+        "public_domain"
+      ]
+    },
+    "spdxExpression": {
+      "type": "string",
+      "examples": [
+        "CC0-1.0",
+        "CC-BY-4.0",
+        "MIT-0 OR Apache-2.0"
+      ]
+    },
+    "rightsStatementUri": {
+      "type": "string"
+    },
+    "accessRights": {
+      "type": "string"
+    },
+    "reuseAllowed": {
+      "type": "boolean"
+    },
+    "humanReviewRequired": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

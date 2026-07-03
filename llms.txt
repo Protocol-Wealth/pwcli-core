@@ -1,0 +1,48 @@
+# pwcli-core
+
+> Open specification for intent-driven, dual-engine applications that combine a conversational/CLI surface with deterministic routes, schemas, registered panels, typed tools, provenance, and approval gates.
+
+Use this file as the LLM-readable map for the repository. The core rule is
+Standards Before Invention: prefer established open standards before creating
+custom schemas.
+
+## Core
+
+- [README](README.md): Project overview and quick start.
+- [Specification](SPEC.md): Complete architecture model, trust boundary, state machine, and output hierarchy.
+- [Architecture engine prompt](prompts/architecture-engine.md): Canonical system prompt for design and implementation tasks.
+- [Security policy](SECURITY.md): AI trust boundaries and security expectations.
+
+## Schemas
+
+- [Intent schema](schemas/intent.schema.json): Structured intent telemetry.
+- [Primitive schema](schemas/primitive.schema.json): Registered UI primitive contract.
+- [Route schema](schemas/route.schema.json): Static fallback route map.
+- [Execution schema](schemas/execution.schema.json): Sandboxed execution metadata.
+- [Source schema](schemas/source.schema.json): Source record, metadata, and provenance fields.
+- [Crosswalk schema](schemas/crosswalk.schema.json): Explicit standards translation mappings.
+
+## Docs
+
+- [Standards map](docs/standards-map.md): Maturity classification for standards and conventions.
+- [Open data](docs/open-data.md): Harvest-first archive and dataset guidance.
+- [Metadata crosswalks](docs/metadata-crosswalks.md): How to map records deterministically.
+- [Agent interop](docs/agent-interop.md): MCP and A2A guidance.
+- [Context packs](docs/context-packs.md): Markdown frontmatter operating context pattern.
+- [Companion projects](docs/companion-projects.md): Related Protocol Wealth open-source references.
+
+## Companion References
+
+- [Protocol Wealth GitHub](https://github.com/Protocol-Wealth)
+- [Nick Rygiel GitHub](https://github.com/rivendale)
+- [nexus-core](https://github.com/Protocol-Wealth/nexus-core)
+- [pwos-core](https://github.com/Protocol-Wealth/pwos-core)
+- [pwplan-core](https://github.com/Protocol-Wealth/pwplan-core)
+- [pw-learnai](https://github.com/Protocol-Wealth/pw-learnai)
+
+## Optional
+
+- [OAI-PMH archive browser example](examples/oai-pmh-archive-browser/README.md)
+- [Finance workbench example](examples/finance-workbench/README.md)
+- [Family OS example](examples/family-os/README.md)
+- [Care portal example](examples/care-portal/README.md)

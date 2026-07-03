@@ -1,0 +1,30 @@
+{
+  "id": "synthetic-ledger-to-tax",
+  "sourceSchema": "Synthetic Ledger Fixture",
+  "targetSchema": "Synthetic Tax Review Worksheet",
+  "maturity": "pattern_only",
+  "mappings": [
+    {
+      "sourcePath": "ledger.entries[].amount",
+      "targetPath": "worksheet.totalAmount",
+      "transform": "sum amounts by category and tax year",
+      "lossiness": "low",
+      "humanReviewRequired": true,
+      "notes": "Example only. Not tax advice."
+    },
+    {
+      "sourcePath": "ledger.entries[].category",
+      "targetPath": "worksheet.lineItem.category",
+      "transform": "map synthetic category labels to worksheet buckets",
+      "lossiness": "medium",
+      "humanReviewRequired": true
+    },
+    {
+      "sourcePath": "ledger.entries[].documentRef",
+      "targetPath": "worksheet.lineItem.sourceRefs[]",
+      "transform": "copy supporting document reference",
+      "lossiness": "none",
+      "humanReviewRequired": false
+    }
+  ]
+}
