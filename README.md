@@ -47,7 +47,7 @@ Human language is lossy. Production systems are not.
   live UI code.
 - **Hard trust boundaries:** AI may propose, classify, parse, and select. It may
   not invent routes, schemas, writes, or permissions.
-- **Standards before invention:** Prefer existing open standards before custom
+- **Standards Before Invention:** Prefer existing open standards before custom
   schemas.
 - **Assertion separation:** Source metadata and AI interpretation are stored as
   distinct layers.
@@ -97,6 +97,18 @@ Read these files in order:
    intent payload.
 4. [docs/standards-map.md](docs/standards-map.md) for standards selection.
 5. [docs/context-packs.md](docs/context-packs.md) for context-pack structure.
+6. [docs/validation.md](docs/validation.md) for local and CI validation.
+
+## Validation
+
+Run the dependency-free repository checks locally:
+
+```bash
+npm run validate
+```
+
+The same command runs in GitHub Actions on pull requests and pushes to `main`
+using Node 22 and Node 24.
 
 ## Example Query
 

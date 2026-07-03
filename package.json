@@ -1,0 +1,29 @@
+{
+  "name": "pwcli-core",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Open specification for intent-driven, dual-engine applications.",
+  "license": "MIT-0 OR Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Protocol-Wealth/pwcli-core.git"
+  },
+  "homepage": "https://github.com/Protocol-Wealth/pwcli-core#readme",
+  "bugs": {
+    "url": "https://github.com/Protocol-Wealth/pwcli-core/issues"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "intent",
+    "provenance",
+    "schemas",
+    "mcp",
+    "openapi",
+    "llms-txt"
+  ]
+}

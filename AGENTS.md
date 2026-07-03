@@ -12,7 +12,7 @@ intent-driven, dual-engine applications.
 - Keep AI interpretation separate from source metadata.
 - Do not add runtime dependencies unless the change explicitly introduces a
   validator or example app.
-- Validate JSON files after editing.
+- Run `npm run validate` after editing schemas, crosswalks, context packs, docs, public metadata, or workflow files.
 
 ## Important Files
 
@@ -24,9 +24,10 @@ intent-driven, dual-engine applications.
 
 ## Expected Checks
 
-For docs-only changes:
+For docs/spec/schema changes:
 
 ```bash
-git diff --check
-node -e "for (const f of require('fs').readdirSync('schemas')) JSON.parse(require('fs').readFileSync('schemas/'+f,'utf8'))"
+npm run validate
 ```
+
+The validator includes JSON parsing, schema metadata checks, crosswalk shape checks, context-pack frontmatter checks, local Markdown link checks, ASCII/LF/trailing-whitespace hygiene, required public markers, simple secret scans, and workflow presence checks.
