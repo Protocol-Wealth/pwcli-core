@@ -1,0 +1,37 @@
+{
+  "schemaRef": "../../../schemas/redaction-policy.schema.json",
+  "name": "Remote Model Sensitive Context Boundary",
+  "summary": "Mask or block sensitive data before sending context to remote model providers.",
+  "example": {
+    "id": "remote-model-sensitive-context",
+    "title": "Remote Model Sensitive Context Boundary",
+    "summary": "Mask or block sensitive data before sending context to remote model providers.",
+    "scope": "prompt",
+    "dataClasses": [
+      "pii",
+      "financial",
+      "health",
+      "child_minor",
+      "secrets"
+    ],
+    "redactionStages": [
+      "before_prompt",
+      "before_external_call",
+      "before_log"
+    ],
+    "actions": [
+      "mask",
+      "block",
+      "require_approval"
+    ],
+    "defaultHandling": "require_approval",
+    "humanReviewRequired": true,
+    "auditRequired": true,
+    "retention": "durable_audit",
+    "appliesToRuntimeRefs": [
+      "openai-agents-sdk"
+    ],
+    "publicSafe": true,
+    "notes": "Use local summaries or tokens where possible; never send secrets."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schemaRef": "../../../schemas/redaction-policy.schema.json",
+  "name": "Durable Workflow Memory Boundary",
+  "summary": "Prevent sensitive data from being written to long-term workflow memory without review.",
+  "example": {
+    "id": "durable-workflow-memory-boundary",
+    "title": "Durable Workflow Memory Boundary",
+    "summary": "Prevent sensitive data from being written to long-term workflow memory without review.",
+    "scope": "memory_write",
+    "dataClasses": [
+      "confidential",
+      "pii",
+      "financial",
+      "health",
+      "child_minor"
+    ],
+    "redactionStages": [
+      "before_memory_write",
+      "before_log"
+    ],
+    "actions": [
+      "summarize",
+      "tokenize",
+      "require_approval"
+    ],
+    "defaultHandling": "require_approval",
+    "humanReviewRequired": true,
+    "auditRequired": true,
+    "retention": "policy_defined",
+    "appliesToRuntimeRefs": [
+      "langgraph"
+    ],
+    "publicSafe": true
+  }
+}

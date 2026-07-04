@@ -42,3 +42,7 @@ State-changing capabilities should include:
 Report security issues through private repository security reporting if enabled,
 or contact the maintainers through the repository owner channel. Do not publish
 exploit details before maintainers have had a reasonable chance to respond.
+
+## Prompt and Agent Poisoning
+
+Implementations should treat public issues, pull requests, comments, documents, web pages, email, MCP tool output, external agent results, and uploaded files as untrusted data. Do not expose secrets, broad write permissions, unrestricted network egress, or public output sinks to workflows that process untrusted content. See [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md).

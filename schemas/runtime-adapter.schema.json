@@ -1,0 +1,402 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/runtime-adapter.schema.json",
+  "title": "pwcli-core Runtime Adapter",
+  "description": "Adapter metadata for mapping an external agent runtime or protocol into the pwcli-core control plane.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "runtime",
+    "title",
+    "summary",
+    "executionMode",
+    "sideEffectLevel",
+    "approvalRequired",
+    "auditRequired",
+    "redactionRequired",
+    "dataAccess",
+    "allowedDataClasses",
+    "controlPlaneResponsibilities",
+    "integrationBoundary",
+    "publicSafe",
+    "untrustedInputPolicy"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "runtime": {
+      "type": "string",
+      "enum": [
+        "openai_agents",
+        "langgraph",
+        "mcp_server",
+        "a2a_agent",
+        "goose",
+        "claude_code",
+        "custom"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "executionMode": {
+      "type": "string",
+      "enum": [
+        "local",
+        "remote",
+        "sandboxed",
+        "managed_service",
+        "hybrid"
+      ]
+    },
+    "language": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "docsUrl": {
+      "type": "string"
+    },
+    "sideEffectLevel": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "idempotent_mutation",
+        "state_change"
+      ]
+    },
+    "approvalRequired": {
+      "type": "boolean"
+    },
+    "auditRequired": {
+      "type": "boolean"
+    },
+    "redactionRequired": {
+      "type": "boolean"
+    },
+    "dataAccess": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "files",
+          "database",
+          "browser",
+          "email",
+          "documents",
+          "code",
+          "calendar",
+          "private_records",
+          "tool_outputs",
+          "memory",
+          "network",
+          "none"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "allowedDataClasses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "restricted",
+          "pii",
+          "financial",
+          "health",
+          "child_minor",
+          "secrets"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "controlPlaneResponsibilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "integrationBoundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redactionPolicyRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "mcpCompatible": {
+      "type": "boolean"
+    },
+    "a2aCompatible": {
+      "type": "boolean"
+    },
+    "publicSafe": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "untrustedInputPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Controls for untrusted input, prompt poisoning, and agent-trigger safety.",
+      "required": [
+        "inputSources",
+        "triggerPolicy",
+        "secretExposureAllowed",
+        "networkEgressPolicy",
+        "tokenPermissions",
+        "defenses"
+      ],
+      "properties": {
+        "inputSources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "issue",
+              "pull_request",
+              "comment",
+              "document",
+              "web_page",
+              "email",
+              "mcp_tool_output",
+              "user_upload",
+              "external_agent_result",
+              "repo_file",
+              "manual"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "triggerPolicy": {
+          "type": "string",
+          "enum": [
+            "trusted_human_only",
+            "trusted_app_only",
+            "public_read_only",
+            "disabled"
+          ]
+        },
+        "secretExposureAllowed": {
+          "type": "boolean"
+        },
+        "networkEgressPolicy": {
+          "type": "string",
+          "enum": [
+            "none",
+            "allowlist",
+            "restricted",
+            "unrestricted"
+          ]
+        },
+        "tokenPermissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "defenses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "quote_untrusted_input",
+              "ignore_source_instructions",
+              "actor_verification",
+              "human_write_access_required",
+              "bot_trigger_block",
+              "least_privilege_token",
+              "secret_scrub",
+              "egress_allowlist",
+              "tool_argument_allowlist",
+              "immutable_input_snapshot",
+              "no_public_summaries",
+              "split_read_write_workflows",
+              "approval_for_mutation",
+              "provenance_logging"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "Required defense markers for treating untrusted content as data, not instructions."
+        }
+      },
+      "allOf": [
+        {
+          "properties": {
+            "defenses": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "quote_untrusted_input"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "ignore_source_instructions"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "secret_scrub"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "provenance_logging"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "networkEgressPolicy": {
+                "not": {
+                  "const": "none"
+                }
+              }
+            },
+            "required": [
+              "networkEgressPolicy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "defenses": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "egress_allowlist"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "tool_argument_allowlist"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sideEffectLevel": {
+            "const": "state_change"
+          }
+        },
+        "required": [
+          "sideEffectLevel"
+        ]
+      },
+      "then": {
+        "properties": {
+          "approvalRequired": {
+            "const": true
+          },
+          "auditRequired": {
+            "const": true
+          },
+          "untrustedInputPolicy": {
+            "properties": {
+              "defenses": {
+                "allOf": [
+                  {
+                    "contains": {
+                      "const": "approval_for_mutation"
+                    }
+                  },
+                  {
+                    "contains": {
+                      "const": "split_read_write_workflows"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "redactionRequired": {
+            "const": true
+          }
+        },
+        "required": [
+          "redactionRequired"
+        ]
+      },
+      "then": {
+        "required": [
+          "redactionPolicyRefs"
+        ],
+        "properties": {
+          "redactionPolicyRefs": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "publicSafe": {
+            "const": true
+          }
+        },
+        "required": [
+          "publicSafe"
+        ]
+      },
+      "then": {
+        "properties": {
+          "untrustedInputPolicy": {
+            "properties": {
+              "secretExposureAllowed": {
+                "const": false
+              },
+              "networkEgressPolicy": {
+                "not": {
+                  "const": "unrestricted"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

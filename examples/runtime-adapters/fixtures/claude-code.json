@@ -1,0 +1,75 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "Claude Code",
+  "summary": "Agentic coding workflow across terminal, IDE, desktop, browser, MCP, instructions, skills, hooks, and repository automation.",
+  "example": {
+    "id": "claude-code",
+    "runtime": "claude_code",
+    "title": "Claude Code",
+    "summary": "Agentic coding workflow across terminal, IDE, desktop, browser, MCP, instructions, skills, hooks, and repository automation.",
+    "executionMode": "hybrid",
+    "license": "proprietary_service",
+    "docsUrl": "https://code.claude.com/docs/en/overview",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "files",
+      "code",
+      "documents",
+      "network",
+      "tool_outputs"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal",
+      "confidential"
+    ],
+    "controlPlaneResponsibilities": [
+      "repo_instruction_boundary",
+      "pr_review_gate",
+      "secret_scan_before_context",
+      "artifact_provenance"
+    ],
+    "integrationBoundary": "Use Claude Code for repo automation; keep private data, secrets, and production mutations outside uncontrolled agent context.",
+    "redactionPolicyRefs": [
+      "repository-agent-secret-boundary"
+    ],
+    "mcpCompatible": true,
+    "a2aCompatible": false,
+    "publicSafe": true,
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "issue",
+        "pull_request",
+        "comment",
+        "repo_file"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "restricted",
+      "tokenPermissions": [
+        "contents_read",
+        "pull_requests_read",
+        "issues_read"
+      ],
+      "defenses": [
+        "quote_untrusted_input",
+        "ignore_source_instructions",
+        "actor_verification",
+        "human_write_access_required",
+        "bot_trigger_block",
+        "least_privilege_token",
+        "secret_scrub",
+        "egress_allowlist",
+        "tool_argument_allowlist",
+        "immutable_input_snapshot",
+        "no_public_summaries",
+        "split_read_write_workflows",
+        "approval_for_mutation",
+        "provenance_logging"
+      ]
+    }
+  }
+}

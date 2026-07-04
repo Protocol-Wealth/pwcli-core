@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/redaction-policy.schema.json",
+  "title": "pwcli-core Redaction Policy",
+  "description": "Policy metadata for privacy, data-classification, and redaction controls around prompts, tools, artifacts, and external calls.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "summary",
+    "scope",
+    "dataClasses",
+    "redactionStages",
+    "actions",
+    "defaultHandling",
+    "humanReviewRequired",
+    "auditRequired",
+    "retention",
+    "publicSafe"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "prompt",
+        "tool_call",
+        "artifact",
+        "external_call",
+        "memory_write",
+        "all"
+      ]
+    },
+    "dataClasses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "restricted",
+          "pii",
+          "financial",
+          "health",
+          "child_minor",
+          "secrets"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "redactionStages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "before_prompt",
+          "before_tool",
+          "before_artifact",
+          "before_external_call",
+          "before_memory_write",
+          "before_log"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "allow",
+          "mask",
+          "hash",
+          "tokenize",
+          "summarize",
+          "block",
+          "require_approval"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "defaultHandling": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "mask",
+        "block",
+        "require_approval"
+      ]
+    },
+    "humanReviewRequired": {
+      "type": "boolean"
+    },
+    "auditRequired": {
+      "type": "boolean"
+    },
+    "retention": {
+      "type": "string",
+      "enum": [
+        "none",
+        "ephemeral",
+        "session",
+        "durable_audit",
+        "policy_defined"
+      ]
+    },
+    "appliesToRuntimeRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "publicSafe": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

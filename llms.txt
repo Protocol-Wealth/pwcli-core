@@ -25,6 +25,8 @@ custom schemas.
 - [Crosswalk schema](schemas/crosswalk.schema.json): Explicit standards translation mappings.
 - [Context-pack schema](schemas/context-pack.schema.json): Markdown frontmatter convention.
 - [Agent-card-lite schema](schemas/agent-card-lite.schema.json): Minimal A2A-inspired delegation profile.
+- [Runtime adapter schema](schemas/runtime-adapter.schema.json): Metadata for wrapping existing agent runtimes with control-plane policy.
+- [Redaction policy schema](schemas/redaction-policy.schema.json): Privacy, data-classification, and redaction policy metadata.
 
 ## Docs
 
@@ -36,6 +38,9 @@ custom schemas.
 - [Companion projects](docs/companion-projects.md): Related Protocol Wealth and maintainer open-source references.
 - [Validation](docs/validation.md): Local and CI checks for schemas, crosswalks, context packs, links, metadata, and hygiene.
 - [Human UX guide](docs/human-ux-guide.md): Progressive disclosure, approval friction, and primitive UX metadata.
+- [Agent runtime adapters](docs/agent-runtime-adapters.md): How to leverage OpenAI Agents SDK, LangGraph, MCP, A2A, Goose, Claude Code, and custom runtimes without reinventing them.
+- [Privacy redaction control plane](docs/privacy-redaction-control-plane.md): Data classes, redaction stages, and policy boundaries for sensitive context.
+- [Agent poisoning defense](docs/agent-poisoning-defense.md): Prompt injection, untrusted input, secret isolation, egress, and workflow poisoning controls.
 
 ## Companion References
 
@@ -54,3 +59,5 @@ custom schemas.
 - [Family OS example](examples/family-os/README.md)
 - [Care portal example](examples/care-portal/README.md)
 - [Turn-based game intent demo](examples/turn-based-game/README.md)
+- [Runtime adapter examples](examples/runtime-adapters/README.md)
+- [Redaction policy examples](examples/redaction-policies/README.md)

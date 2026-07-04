@@ -1,0 +1,37 @@
+{
+  "schemaRef": "../../../schemas/redaction-policy.schema.json",
+  "name": "External Agent Delegation Boundary",
+  "summary": "Restrict data shared with external delegated agents and require provenance on returned results.",
+  "example": {
+    "id": "external-agent-delegation",
+    "title": "External Agent Delegation Boundary",
+    "summary": "Restrict data shared with external delegated agents and require provenance on returned results.",
+    "scope": "external_call",
+    "dataClasses": [
+      "internal",
+      "confidential",
+      "pii",
+      "financial",
+      "secrets"
+    ],
+    "redactionStages": [
+      "before_external_call",
+      "before_artifact",
+      "before_log"
+    ],
+    "actions": [
+      "mask",
+      "summarize",
+      "block",
+      "require_approval"
+    ],
+    "defaultHandling": "require_approval",
+    "humanReviewRequired": true,
+    "auditRequired": true,
+    "retention": "durable_audit",
+    "appliesToRuntimeRefs": [
+      "a2a-agent"
+    ],
+    "publicSafe": true
+  }
+}
