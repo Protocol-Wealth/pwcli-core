@@ -98,7 +98,12 @@ function validateAsciiAndWhitespace() {
 }
 
 
-function expectNonEmptyString(fileRel, obj, key, scope) {
+function expectNonEmptyString(fileRel, obj, key, scope, options = {}) {
+  if (!(key in obj)) {
+    if (options.optional) return;
+    addError(fileRel, `${scope} ${key} must be a non-empty string`);
+    return;
+  }
   if (typeof obj[key] !== 'string' || obj[key].trim() === '') {
     addError(fileRel, `${scope} ${key} must be a non-empty string`);
   }
@@ -134,6 +139,39 @@ function expectStringArray(fileRel, obj, key, scope, options = {}) {
   if (options.minItems && obj[key].length < options.minItems) addError(fileRel, `${scope} ${key} must have at least ${options.minItems} item(s)`);
   obj[key].forEach((item, index) => {
     if (typeof item !== 'string' || item.trim() === '') addError(fileRel, `${scope} ${key}[${index}] must be a non-empty string`);
+  });
+}
+
+function expectEnumString(fileRel, obj, key, allowed, scope, options = {}) {
+  if (!(key in obj)) {
+    if (options.optional) return;
+    addError(fileRel, `${scope} ${key} must be one of: ${Array.from(allowed).join(', ')}`);
+    return;
+  }
+  if (typeof obj[key] !== 'string' || !allowed.has(obj[key])) {
+    addError(fileRel, `${scope} ${key} is invalid: ${obj[key]}`);
+  }
+}
+
+function expectEnumArray(fileRel, obj, key, allowed, scope, options = {}) {
+  if (!(key in obj)) {
+    if (options.optional) return;
+    addError(fileRel, `${scope} ${key} must be an array`);
+    return;
+  }
+  if (!Array.isArray(obj[key])) {
+    addError(fileRel, `${scope} ${key} must be an array`);
+    return;
+  }
+  if (options.minItems && obj[key].length < options.minItems) addError(fileRel, `${scope} ${key} must have at least ${options.minItems} item(s)`);
+  const seen = new Set();
+  obj[key].forEach((item, index) => {
+    if (typeof item !== 'string' || !allowed.has(item)) {
+      addError(fileRel, `${scope} ${key}[${index}] is invalid: ${item}`);
+      return;
+    }
+    if (seen.has(item)) addError(fileRel, `${scope} ${key} has duplicate value ${item}`);
+    seen.add(item);
   });
 }
 
@@ -197,12 +235,156 @@ function validateProvenanceExample(fileRel, example) {
   expectStringArray(fileRel, example, 'used', 'provenance example', { optional: true });
 }
 
+function validateRuntimeAdapterExample(fileRel, example) {
+  const allowed = new Set([
+    'id',
+    'runtime',
+    'title',
+    'summary',
+    'executionMode',
+    'language',
+    'license',
+    'docsUrl',
+    'sideEffectLevel',
+    'approvalRequired',
+    'auditRequired',
+    'redactionRequired',
+    'dataAccess',
+    'allowedDataClasses',
+    'controlPlaneResponsibilities',
+    'integrationBoundary',
+    'redactionPolicyRefs',
+    'mcpCompatible',
+    'a2aCompatible',
+    'publicSafe',
+    'notes',
+    'untrustedInputPolicy'
+  ]);
+  const runtimeValues = new Set(['openai_agents', 'langgraph', 'mcp_server', 'a2a_agent', 'goose', 'claude_code', 'custom']);
+  const executionModes = new Set(['local', 'remote', 'sandboxed', 'managed_service', 'hybrid']);
+  const sideEffectLevels = new Set(['read_only', 'idempotent_mutation', 'state_change']);
+  const dataAccessValues = new Set(['files', 'database', 'browser', 'email', 'documents', 'code', 'calendar', 'private_records', 'tool_outputs', 'memory', 'network', 'none']);
+  const dataClassValues = new Set(['public', 'internal', 'confidential', 'restricted', 'pii', 'financial', 'health', 'child_minor', 'secrets']);
+  rejectUnknownKeys(fileRel, example, allowed, 'runtime adapter example');
+  for (const key of ['id', 'title', 'summary', 'integrationBoundary']) expectNonEmptyString(fileRel, example, key, 'runtime adapter example');
+  for (const key of ['language', 'license', 'docsUrl', 'notes']) expectNonEmptyString(fileRel, example, key, 'runtime adapter example', { optional: true });
+  if (!/^[a-z][a-z0-9_-]*$/.test(example.id || '')) addError(fileRel, 'runtime adapter example id must be lowercase kebab/snake style');
+  expectEnumString(fileRel, example, 'runtime', runtimeValues, 'runtime adapter example');
+  expectEnumString(fileRel, example, 'executionMode', executionModes, 'runtime adapter example');
+  expectEnumString(fileRel, example, 'sideEffectLevel', sideEffectLevels, 'runtime adapter example');
+  for (const key of ['approvalRequired', 'auditRequired', 'redactionRequired', 'publicSafe']) expectBoolean(fileRel, example, key, 'runtime adapter example');
+  for (const key of ['mcpCompatible', 'a2aCompatible']) if (key in example) expectBoolean(fileRel, example, key, 'runtime adapter example');
+  expectEnumArray(fileRel, example, 'dataAccess', dataAccessValues, 'runtime adapter example', { minItems: 1 });
+  expectEnumArray(fileRel, example, 'allowedDataClasses', dataClassValues, 'runtime adapter example', { minItems: 1 });
+  expectStringArray(fileRel, example, 'controlPlaneResponsibilities', 'runtime adapter example', { minItems: 1 });
+  expectStringArray(fileRel, example, 'redactionPolicyRefs', 'runtime adapter example', { optional: true });
+  if (example.redactionRequired) expectStringArray(fileRel, example, 'redactionPolicyRefs', 'runtime adapter example', { minItems: 1 });
+  if (example.sideEffectLevel === 'state_change') {
+    if (example.approvalRequired !== true) addError(fileRel, 'runtime adapter example state_change requires approvalRequired true');
+    if (example.auditRequired !== true) addError(fileRel, 'runtime adapter example state_change requires auditRequired true');
+  }
+  if (Array.isArray(example.allowedDataClasses) && example.allowedDataClasses.some((klass) => ['restricted', 'pii', 'financial', 'health', 'child_minor', 'secrets'].includes(klass))) {
+    if (example.redactionRequired !== true) addError(fileRel, 'runtime adapter example sensitive data classes require redactionRequired true');
+    if (example.auditRequired !== true) addError(fileRel, 'runtime adapter example sensitive data classes require auditRequired true');
+  }
+  validateUntrustedInputPolicy(fileRel, example.untrustedInputPolicy, example);
+}
+
+function validateUntrustedInputPolicy(fileRel, policy, adapter) {
+  const scope = 'runtime adapter example untrustedInputPolicy';
+  const allowed = new Set(['inputSources', 'triggerPolicy', 'secretExposureAllowed', 'networkEgressPolicy', 'tokenPermissions', 'defenses']);
+  const inputSourceValues = new Set(['issue', 'pull_request', 'comment', 'document', 'web_page', 'email', 'mcp_tool_output', 'user_upload', 'external_agent_result', 'repo_file', 'manual']);
+  const triggerPolicies = new Set(['trusted_human_only', 'trusted_app_only', 'public_read_only', 'disabled']);
+  const networkPolicies = new Set(['none', 'allowlist', 'restricted', 'unrestricted']);
+  const defenseValues = new Set([
+    'quote_untrusted_input',
+    'ignore_source_instructions',
+    'actor_verification',
+    'human_write_access_required',
+    'bot_trigger_block',
+    'least_privilege_token',
+    'secret_scrub',
+    'egress_allowlist',
+    'tool_argument_allowlist',
+    'immutable_input_snapshot',
+    'no_public_summaries',
+    'split_read_write_workflows',
+    'approval_for_mutation',
+    'provenance_logging'
+  ]);
+  if (!policy || typeof policy !== 'object' || Array.isArray(policy)) {
+    addError(fileRel, `${scope} must be an object`);
+    return;
+  }
+  rejectUnknownKeys(fileRel, policy, allowed, scope);
+  expectEnumArray(fileRel, policy, 'inputSources', inputSourceValues, scope, { minItems: 1 });
+  expectEnumString(fileRel, policy, 'triggerPolicy', triggerPolicies, scope);
+  expectBoolean(fileRel, policy, 'secretExposureAllowed', scope);
+  expectEnumString(fileRel, policy, 'networkEgressPolicy', networkPolicies, scope);
+  expectStringArray(fileRel, policy, 'tokenPermissions', scope);
+  expectEnumArray(fileRel, policy, 'defenses', defenseValues, scope, { minItems: 1 });
+  if (policy.secretExposureAllowed === true) {
+    addError(fileRel, `${scope} secretExposureAllowed must remain false for public examples`);
+  }
+  if (policy.networkEgressPolicy === 'unrestricted') {
+    addError(fileRel, `${scope} must not use unrestricted network egress in examples`);
+  }
+  for (const defense of ['quote_untrusted_input', 'ignore_source_instructions', 'secret_scrub', 'provenance_logging']) {
+    if (Array.isArray(policy.defenses) && !policy.defenses.includes(defense)) {
+      addError(fileRel, `${scope} defenses must include ${defense}`);
+    }
+  }
+  if (policy.networkEgressPolicy !== 'none') {
+    for (const defense of ['egress_allowlist', 'tool_argument_allowlist']) {
+      if (Array.isArray(policy.defenses) && !policy.defenses.includes(defense)) {
+        addError(fileRel, `${scope} defenses must include ${defense} when network egress is enabled`);
+      }
+    }
+  }
+  if (adapter && adapter.sideEffectLevel === 'state_change') {
+    for (const defense of ['approval_for_mutation', 'split_read_write_workflows']) {
+      if (Array.isArray(policy.defenses) && !policy.defenses.includes(defense)) {
+        addError(fileRel, `${scope} defenses must include ${defense} for state-changing adapters`);
+      }
+    }
+  }
+}
+
+function validateRedactionPolicyExample(fileRel, example) {
+  const allowed = new Set(['id', 'title', 'summary', 'scope', 'dataClasses', 'redactionStages', 'actions', 'defaultHandling', 'humanReviewRequired', 'auditRequired', 'retention', 'appliesToRuntimeRefs', 'publicSafe', 'notes']);
+  const scopeValues = new Set(['prompt', 'tool_call', 'artifact', 'external_call', 'memory_write', 'all']);
+  const dataClassValues = new Set(['public', 'internal', 'confidential', 'restricted', 'pii', 'financial', 'health', 'child_minor', 'secrets']);
+  const redactionStageValues = new Set(['before_prompt', 'before_tool', 'before_artifact', 'before_external_call', 'before_memory_write', 'before_log']);
+  const actionValues = new Set(['allow', 'mask', 'hash', 'tokenize', 'summarize', 'block', 'require_approval']);
+  const defaultHandlingValues = new Set(['allow', 'mask', 'block', 'require_approval']);
+  const retentionValues = new Set(['none', 'ephemeral', 'session', 'durable_audit', 'policy_defined']);
+  rejectUnknownKeys(fileRel, example, allowed, 'redaction policy example');
+  for (const key of ['id', 'title', 'summary']) expectNonEmptyString(fileRel, example, key, 'redaction policy example');
+  if (!/^[a-z][a-z0-9_-]*$/.test(example.id || '')) addError(fileRel, 'redaction policy example id must be lowercase kebab/snake style');
+  expectEnumString(fileRel, example, 'scope', scopeValues, 'redaction policy example');
+  expectEnumArray(fileRel, example, 'dataClasses', dataClassValues, 'redaction policy example', { minItems: 1 });
+  expectEnumArray(fileRel, example, 'redactionStages', redactionStageValues, 'redaction policy example', { minItems: 1 });
+  expectEnumArray(fileRel, example, 'actions', actionValues, 'redaction policy example', { minItems: 1 });
+  expectEnumString(fileRel, example, 'defaultHandling', defaultHandlingValues, 'redaction policy example');
+  for (const key of ['humanReviewRequired', 'auditRequired', 'publicSafe']) expectBoolean(fileRel, example, key, 'redaction policy example');
+  expectEnumString(fileRel, example, 'retention', retentionValues, 'redaction policy example');
+  expectStringArray(fileRel, example, 'appliesToRuntimeRefs', 'redaction policy example', { optional: true });
+  if (['restricted', 'pii', 'financial', 'health', 'child_minor', 'secrets'].some((klass) => Array.isArray(example.dataClasses) && example.dataClasses.includes(klass))) {
+    if (!Array.isArray(example.actions) || !example.actions.some((action) => ['mask', 'hash', 'tokenize', 'summarize', 'block', 'require_approval'].includes(action))) {
+      addError(fileRel, 'redaction policy example sensitive data classes need a protective action');
+    }
+    if (example.auditRequired !== true) addError(fileRel, 'redaction policy example sensitive data classes require auditRequired true');
+  }
+}
+
 function validateKnownSchemaExample(fileRel, schemaRef, example) {
   const schemaName = path.basename(schemaRef);
   if (schemaName === 'intent.schema.json') validateIntentExample(fileRel, example);
   if (schemaName === 'primitive.schema.json') validatePrimitiveExample(fileRel, example);
   if (schemaName === 'source.schema.json') validateSourceExample(fileRel, example);
   if (schemaName === 'provenance.schema.json') validateProvenanceExample(fileRel, example);
+  if (schemaName === 'runtime-adapter.schema.json') validateRuntimeAdapterExample(fileRel, example);
+  if (schemaName === 'redaction-policy.schema.json') validateRedactionPolicyExample(fileRel, example);
 }
 
 function validateSchemas() {
@@ -409,6 +591,8 @@ function validateExampleSchemas() {
 
 function validateExampleFixtures() {
   const files = walk(path.join(root, 'examples')).filter((file) => path.basename(path.dirname(file)) === 'fixtures' && file.endsWith('.json')).sort();
+  const runtimeAdapters = new Map();
+  const redactionPolicies = new Map();
   for (const file of files) {
     const fileRel = rel(file);
     const obj = readJson(file);
@@ -429,7 +613,34 @@ function validateExampleFixtures() {
       } else if (!resolved.endsWith('.schema.json')) {
         addError(fileRel, 'schemaRef must target a .schema.json file');
       } else {
+        const schemaName = path.basename(obj.schemaRef);
         validateKnownSchemaExample(fileRel, obj.schemaRef, obj.example);
+        if (schemaName === 'runtime-adapter.schema.json' && typeof obj.example.id === 'string') {
+          runtimeAdapters.set(obj.example.id, {
+            fileRel,
+            redactionPolicyRefs: Array.isArray(obj.example.redactionPolicyRefs) ? obj.example.redactionPolicyRefs : []
+          });
+        }
+        if (schemaName === 'redaction-policy.schema.json' && typeof obj.example.id === 'string') {
+          redactionPolicies.set(obj.example.id, {
+            fileRel,
+            appliesToRuntimeRefs: Array.isArray(obj.example.appliesToRuntimeRefs) ? obj.example.appliesToRuntimeRefs : []
+          });
+        }
+      }
+    }
+  }
+  for (const [id, adapter] of runtimeAdapters) {
+    for (const policyRef of adapter.redactionPolicyRefs) {
+      if (!redactionPolicies.has(policyRef)) {
+        addError(adapter.fileRel, `runtime adapter ${id} references missing redaction policy ${policyRef}`);
+      }
+    }
+  }
+  for (const [id, policy] of redactionPolicies) {
+    for (const runtimeRef of policy.appliesToRuntimeRefs) {
+      if (!runtimeAdapters.has(runtimeRef)) {
+        addError(policy.fileRel, `redaction policy ${id} applies to missing runtime adapter ${runtimeRef}`);
       }
     }
   }

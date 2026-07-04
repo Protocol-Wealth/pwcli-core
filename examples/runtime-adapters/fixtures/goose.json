@@ -1,0 +1,69 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "Goose",
+  "summary": "Local-first general AI agent with desktop, CLI, API, provider flexibility, and MCP extension support.",
+  "example": {
+    "id": "goose",
+    "runtime": "goose",
+    "title": "Goose",
+    "summary": "Local-first general AI agent with desktop, CLI, API, provider flexibility, and MCP extension support.",
+    "executionMode": "local",
+    "language": "rust",
+    "license": "Apache-2.0",
+    "docsUrl": "https://github.com/aaif-goose/goose",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "files",
+      "code",
+      "documents",
+      "network",
+      "tool_outputs"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal",
+      "confidential"
+    ],
+    "controlPlaneResponsibilities": [
+      "local_workspace_boundary",
+      "provider_data_boundary",
+      "approval_for_file_mutation",
+      "redaction_before_external_call"
+    ],
+    "integrationBoundary": "Use Goose for local agent execution; keep pwcli-core approval, redaction, and artifact receipts around the run.",
+    "redactionPolicyRefs": [
+      "repository-agent-secret-boundary"
+    ],
+    "mcpCompatible": true,
+    "a2aCompatible": false,
+    "publicSafe": true,
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "manual",
+        "repo_file",
+        "document",
+        "mcp_tool_output"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "restricted",
+      "tokenPermissions": [
+        "local_workspace_tokens"
+      ],
+      "defenses": [
+        "quote_untrusted_input",
+        "least_privilege_token",
+        "secret_scrub",
+        "approval_for_mutation",
+        "provenance_logging",
+        "ignore_source_instructions",
+        "egress_allowlist",
+        "tool_argument_allowlist",
+        "split_read_write_workflows"
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "Agent2Agent Protocol",
+  "summary": "Agent-to-agent interoperability layer for discovery, delegation, and structured result exchange.",
+  "example": {
+    "id": "a2a-agent",
+    "runtime": "a2a_agent",
+    "title": "Agent2Agent Protocol",
+    "summary": "Agent-to-agent interoperability layer for discovery, delegation, and structured result exchange.",
+    "executionMode": "remote",
+    "license": "Apache-2.0",
+    "docsUrl": "https://a2a-protocol.org/latest/",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "tool_outputs",
+      "network"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal"
+    ],
+    "controlPlaneResponsibilities": [
+      "agent_card_validation",
+      "delegation_approval",
+      "result_provenance",
+      "redaction_before_external_call"
+    ],
+    "integrationBoundary": "Use A2A for external agent collaboration; do not share private memory or proprietary tools by default.",
+    "redactionPolicyRefs": [
+      "external-agent-delegation"
+    ],
+    "mcpCompatible": false,
+    "a2aCompatible": true,
+    "publicSafe": true,
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "external_agent_result"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "restricted",
+      "tokenPermissions": [
+        "delegation_scoped_tokens"
+      ],
+      "defenses": [
+        "quote_untrusted_input",
+        "ignore_source_instructions",
+        "secret_scrub",
+        "egress_allowlist",
+        "approval_for_mutation",
+        "provenance_logging",
+        "tool_argument_allowlist",
+        "split_read_write_workflows"
+      ]
+    }
+  }
+}

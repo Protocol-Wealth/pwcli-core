@@ -1,0 +1,66 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "Model Context Protocol Server",
+  "summary": "Standard agent-to-tool and agent-to-data connector for files, databases, APIs, and workflows.",
+  "example": {
+    "id": "mcp-server",
+    "runtime": "mcp_server",
+    "title": "Model Context Protocol Server",
+    "summary": "Standard agent-to-tool and agent-to-data connector for files, databases, APIs, and workflows.",
+    "executionMode": "hybrid",
+    "license": "Apache-2.0 for current specification contributions; verify upstream license files for legacy and documentation terms.",
+    "docsUrl": "https://modelcontextprotocol.io/docs/getting-started/intro",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "files",
+      "database",
+      "documents",
+      "tool_outputs",
+      "network"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal",
+      "confidential"
+    ],
+    "controlPlaneResponsibilities": [
+      "tool_allowlist",
+      "source_recording",
+      "redaction_before_tool",
+      "approval_for_mutating_tools"
+    ],
+    "integrationBoundary": "Use MCP for tool access; host applications must enforce authorization, redaction, and tool provenance.",
+    "redactionPolicyRefs": [
+      "mcp-tool-data-minimization"
+    ],
+    "mcpCompatible": true,
+    "a2aCompatible": false,
+    "publicSafe": true,
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "mcp_tool_output",
+        "document",
+        "web_page"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "restricted",
+      "tokenPermissions": [
+        "tool_scoped_tokens"
+      ],
+      "defenses": [
+        "quote_untrusted_input",
+        "ignore_source_instructions",
+        "secret_scrub",
+        "tool_argument_allowlist",
+        "egress_allowlist",
+        "provenance_logging",
+        "approval_for_mutation",
+        "split_read_write_workflows"
+      ]
+    }
+  }
+}

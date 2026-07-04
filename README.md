@@ -7,7 +7,11 @@ provenance, and explicit approval gates.
 
 The project is intentionally not a chatbot framework. It is a control-plane
 blueprint for software that can feel conversational without surrendering runtime
-predictability.
+predictability. It is designed as a broad starting point that can wrap existing
+agent infrastructure instead of replacing it. Use OpenAI Agents SDK, LangGraph,
+MCP servers, A2A agents, Goose, Claude Code, or custom runtimes for execution;
+use `pwcli-core` for intent contracts, primitive selection, approvals,
+provenance, privacy, redaction, and data boundaries.
 
 ## Maintainer
 
@@ -27,7 +31,7 @@ reusable outside Protocol Wealth.
 - `pwos-core`: https://github.com/Protocol-Wealth/pwos-core
 - `pwplan-core`: https://github.com/Protocol-Wealth/pwplan-core
 - `pw-learnai`: https://github.com/Protocol-Wealth/pw-learnai
-- `iocalc-agent-env`: https://github.com/rivendale/iocalc-agent-env
+- `iocalc-agent-env`: https://github.com/rivendale/iocalc-agent-env (public dual-license reference; verify current terms in that repo)
 
 ## Core Idea
 
@@ -55,6 +59,8 @@ Human language is lossy. Production systems are not.
   distinct layers.
 - **Context packs:** Static Markdown files with YAML frontmatter provide
   agent-loadable operating context without turning prompts into a truth store.
+- **Adapter governance:** External agent runtimes stay useful while `pwcli-core`
+  declares side effects, data access, redaction, approval, and audit boundaries.
 
 ## Standards Maturity
 
@@ -102,6 +108,9 @@ Read these files in order:
 6. [docs/validation.md](docs/validation.md) for local and CI validation.
 7. [examples/turn-based-game/README.md](examples/turn-based-game/README.md) for a runnable browser demo.
 8. [docs/human-ux-guide.md](docs/human-ux-guide.md) for progressive disclosure patterns.
+9. [docs/agent-runtime-adapters.md](docs/agent-runtime-adapters.md) for using existing agent infrastructure.
+10. [docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md) for data and redaction policy.
+11. [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for prompt injection and agent poisoning controls.
 
 ## Validation
 
@@ -113,6 +122,10 @@ npm run validate
 
 The same command runs in GitHub Actions on pull requests and pushes to `main`
 using Node 22 and Node 24.
+
+## Runtime Adapter Examples
+
+See [examples/runtime-adapters/README.md](examples/runtime-adapters/README.md) for synthetic adapter examples covering OpenAI Agents SDK, LangGraph, MCP servers, A2A agents, Goose, and Claude Code. See [examples/redaction-policies/README.md](examples/redaction-policies/README.md) for privacy and redaction policy examples. See [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for controls against prompt injection, poisoned issues, poisoned tool outputs, and workflow exfiltration.
 
 ## Runnable Demo
 

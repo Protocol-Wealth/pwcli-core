@@ -1,0 +1,35 @@
+{
+  "schemaRef": "../../../schemas/redaction-policy.schema.json",
+  "name": "MCP Tool Data Minimization",
+  "summary": "Send the minimum necessary context to MCP tools and record source/provenance metadata.",
+  "example": {
+    "id": "mcp-tool-data-minimization",
+    "title": "MCP Tool Data Minimization",
+    "summary": "Send the minimum necessary context to MCP tools and record source/provenance metadata.",
+    "scope": "tool_call",
+    "dataClasses": [
+      "confidential",
+      "pii",
+      "financial",
+      "secrets"
+    ],
+    "redactionStages": [
+      "before_tool",
+      "before_log"
+    ],
+    "actions": [
+      "mask",
+      "tokenize",
+      "block",
+      "require_approval"
+    ],
+    "defaultHandling": "require_approval",
+    "humanReviewRequired": true,
+    "auditRequired": true,
+    "retention": "policy_defined",
+    "appliesToRuntimeRefs": [
+      "mcp-server"
+    ],
+    "publicSafe": true
+  }
+}

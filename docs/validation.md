@@ -25,7 +25,7 @@ The GitHub Actions workflow runs the same command on pull requests and pushes to
   `humanReviewRequired`.
 - Every `context-pack/*.md` file has YAML frontmatter matching the repository's
   context-pack convention.
-- Example-local `.schema.json` files parse, and fixture JSON files declare a resolvable `schemaRef`, `name`, `summary`, and `example`; core fixtures receive lightweight shape checks.
+- Example-local `.schema.json` files parse, and fixture JSON files declare a resolvable `schemaRef`, `name`, `summary`, and `example`; core, runtime-adapter, and redaction-policy fixtures receive lightweight shape checks.
 - Markdown local links resolve.
 - Public metadata markers are present in root docs.
 - Text files are ASCII-only, use LF line endings, avoid trailing whitespace, and

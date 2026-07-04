@@ -1,0 +1,67 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "LangGraph",
+  "summary": "Durable stateful orchestration for long-running agent workflows, human-in-loop, persistence, memory, and streaming.",
+  "example": {
+    "id": "langgraph",
+    "runtime": "langgraph",
+    "title": "LangGraph",
+    "summary": "Durable stateful orchestration for long-running agent workflows, human-in-loop, persistence, memory, and streaming.",
+    "executionMode": "hybrid",
+    "language": "python",
+    "license": "MIT",
+    "docsUrl": "https://docs.langchain.com/oss/python/langgraph/overview",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "database",
+      "tool_outputs",
+      "memory"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal",
+      "confidential",
+      "financial"
+    ],
+    "controlPlaneResponsibilities": [
+      "checkpoint_policy",
+      "human_interrupt_policy",
+      "artifact_provenance",
+      "redaction_before_memory_write"
+    ],
+    "integrationBoundary": "Use LangGraph for durable workflow execution; keep pwcli-core schemas as the policy and artifact envelope.",
+    "redactionPolicyRefs": [
+      "durable-workflow-memory-boundary"
+    ],
+    "mcpCompatible": true,
+    "a2aCompatible": true,
+    "publicSafe": true,
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "manual",
+        "document",
+        "mcp_tool_output"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "restricted",
+      "tokenPermissions": [
+        "workflow_scoped_tokens"
+      ],
+      "defenses": [
+        "quote_untrusted_input",
+        "immutable_input_snapshot",
+        "secret_scrub",
+        "approval_for_mutation",
+        "provenance_logging",
+        "ignore_source_instructions",
+        "egress_allowlist",
+        "tool_argument_allowlist",
+        "split_read_write_workflows"
+      ]
+    }
+  }
+}

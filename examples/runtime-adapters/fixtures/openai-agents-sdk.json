@@ -1,0 +1,67 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "OpenAI Agents SDK",
+  "summary": "Managed agent loop for tools, handoffs, guardrails, sessions, tracing, MCP, and human-in-loop workflows.",
+  "example": {
+    "id": "openai-agents-sdk",
+    "runtime": "openai_agents",
+    "title": "OpenAI Agents SDK",
+    "summary": "Managed agent loop for tools, handoffs, guardrails, sessions, tracing, MCP, and human-in-loop workflows.",
+    "executionMode": "managed_service",
+    "language": "python",
+    "license": "MIT",
+    "docsUrl": "https://openai.github.io/openai-agents-python/",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "tool_outputs",
+      "memory",
+      "network"
+    ],
+    "allowedDataClasses": [
+      "public",
+      "internal",
+      "confidential"
+    ],
+    "controlPlaneResponsibilities": [
+      "intent_validation",
+      "redaction_before_prompt",
+      "approval_for_state_change",
+      "artifact_provenance"
+    ],
+    "integrationBoundary": "Use the SDK for agent execution; keep pwcli-core policy checks before prompts, tools, handoffs, and artifacts.",
+    "redactionPolicyRefs": [
+      "remote-model-sensitive-context"
+    ],
+    "mcpCompatible": true,
+    "a2aCompatible": false,
+    "publicSafe": true,
+    "notes": "Do not send restricted, secrets, health, child_minor, or unredacted PII without an explicit host policy.",
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "manual",
+        "mcp_tool_output",
+        "document"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "restricted",
+      "tokenPermissions": [
+        "application_scoped_tool_tokens"
+      ],
+      "defenses": [
+        "quote_untrusted_input",
+        "ignore_source_instructions",
+        "least_privilege_token",
+        "secret_scrub",
+        "approval_for_mutation",
+        "provenance_logging",
+        "egress_allowlist",
+        "tool_argument_allowlist",
+        "split_read_write_workflows"
+      ]
+    }
+  }
+}
