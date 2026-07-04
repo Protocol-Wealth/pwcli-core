@@ -33,8 +33,9 @@ custom schemas.
 - [Metadata crosswalks](docs/metadata-crosswalks.md): How to map records deterministically.
 - [Agent interop](docs/agent-interop.md): MCP and A2A guidance.
 - [Context packs](docs/context-packs.md): Markdown frontmatter operating context pattern.
-- [Companion projects](docs/companion-projects.md): Related Protocol Wealth open-source references.
+- [Companion projects](docs/companion-projects.md): Related Protocol Wealth and maintainer open-source references.
 - [Validation](docs/validation.md): Local and CI checks for schemas, crosswalks, context packs, links, metadata, and hygiene.
+- [Human UX guide](docs/human-ux-guide.md): Progressive disclosure, approval friction, and primitive UX metadata.
 
 ## Companion References
 
@@ -44,6 +45,7 @@ custom schemas.
 - [pwos-core](https://github.com/Protocol-Wealth/pwos-core)
 - [pwplan-core](https://github.com/Protocol-Wealth/pwplan-core)
 - [pw-learnai](https://github.com/Protocol-Wealth/pw-learnai)
+- [iocalc-agent-env](https://github.com/rivendale/iocalc-agent-env)
 
 ## Optional
 
@@ -51,3 +53,4 @@ custom schemas.
 - [Finance workbench example](examples/finance-workbench/README.md)
 - [Family OS example](examples/family-os/README.md)
 - [Care portal example](examples/care-portal/README.md)
+- [Turn-based game intent demo](examples/turn-based-game/README.md)

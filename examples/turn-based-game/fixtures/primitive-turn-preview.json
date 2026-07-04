@@ -1,0 +1,43 @@
+{
+  "schemaRef": "../../../schemas/primitive.schema.json",
+  "name": "Turn preview primitive",
+  "summary": "Registered panel that previews costs and risks before a state-changing commit.",
+  "example": {
+    "id": "turn-preview",
+    "title": "Turn Preview",
+    "summary": "Preview a state-changing turn command before deterministic resolution.",
+    "domain": "turn_game",
+    "kind": "panel",
+    "status": "active",
+    "allowedIntents": [
+      "card_play:pressure_raid"
+    ],
+    "fallbackRoute": "/turn-game/hand",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "sourceRequirements": [
+      "state:turn-game:turn-1"
+    ],
+    "supportsReturnFocus": true,
+    "publicSafe": true,
+    "ux": {
+      "primaryAction": "Commit Raid Sequence",
+      "previewFields": [
+        "target",
+        "expectedDamage",
+        "expectedDrain"
+      ],
+      "riskLabels": [
+        "Counter card possible if rival energy drops below 3"
+      ],
+      "costFields": [
+        "energyCost",
+        "cardSlotCost"
+      ],
+      "emptyState": "No preview is available until intent compiles.",
+      "loadingState": "Compiling tactical intent...",
+      "errorState": "Action blocked by deterministic validation.",
+      "undoPolicy": "checkpoint_restore"
+    }
+  }
+}

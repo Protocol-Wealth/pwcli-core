@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pwcli-core Turn-Based Game Intent Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">pwcli-core runnable example</p>
+      <h1>Intent first. State second. Approval before commit.</h1>
+      <p class="lede">A small browser demo showing fuzzy command text compiled into structured intent telemetry, a registered preview panel, and a deterministic result ledger.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card console-card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">State A</p>
+            <h2>Console</h2>
+          </div>
+          <span id="mode-pill" class="pill">Intermediate</span>
+        </div>
+        <label for="command">Command</label>
+        <textarea id="command" rows="4">pressure raid the rival core and end my turn</textarea>
+        <div class="button-row">
+          <button id="compile" type="button">Compile Intent</button>
+          <button id="approve" type="button" disabled>Approve Transaction</button>
+          <button id="reject" type="button" class="secondary" disabled>Reject</button>
+          <button id="reset" type="button" class="ghost">Reset</button>
+        </div>
+        <p class="hint">The parser is deterministic and tiny on purpose. A real app can replace it with an LLM or typed parser only if the output still passes schema validation.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Current bedrock</p>
+            <h2>Game State</h2>
+          </div>
+        </div>
+        <dl id="game-state" class="stat-grid"></dl>
+      </article>
+    </section>
+
+    <section class="grid lower">
+      <article class="card preview-card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">States B-D</p>
+            <h2>Hydrated Preview</h2>
+          </div>
+          <span id="approval-pill" class="pill muted">Waiting</span>
+        </div>
+        <div id="preview" class="preview-empty">Compile a command to hydrate the registered panel.</div>
+      </article>
+
+      <article class="card ledger-card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">States E-F</p>
+            <h2>Ledger and Return Focus</h2>
+          </div>
+        </div>
+        <div id="ledger" class="ledger-empty">No ledger events yet.</div>
+      </article>
+    </section>
+  </main>
+  <script src="demo.js"></script>
+</body>
+</html>

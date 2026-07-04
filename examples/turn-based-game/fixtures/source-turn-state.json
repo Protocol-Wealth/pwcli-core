@@ -1,0 +1,23 @@
+{
+  "schemaRef": "../../../schemas/source.schema.json",
+  "name": "Turn-based game source state",
+  "summary": "Synthetic source record for deterministic turn-based game state.",
+  "example": {
+    "id": "state:turn-game:turn-1",
+    "sourceType": "manual_entry",
+    "protocol": "manual",
+    "sourceIdentifier": "turn-game-turn-1",
+    "retrievedAt": "2026-07-03T00:00:00Z",
+    "rights": {
+      "status": "open",
+      "spdxExpression": "CC0-1.0",
+      "reuseAllowed": true,
+      "humanReviewRequired": false,
+      "notes": "Synthetic demo data."
+    },
+    "rawRecordRef": "examples/turn-based-game/fixtures/source-turn-state.json",
+    "assertionLayer": "descriptive_source_metadata",
+    "confidence": 1,
+    "humanReviewState": "not_required"
+  }
+}

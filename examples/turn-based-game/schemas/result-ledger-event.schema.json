@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/examples/turn-based-game/schemas/result-ledger-event.schema.json",
+  "title": "pwcli-core Turn Game Result Ledger Event",
+  "description": "Example-local ledger event emitted after a deterministic turn-based game action resolves.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "timestamp",
+    "actor",
+    "intent",
+    "energySpent",
+    "payload",
+    "sourceRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "energySpent": {
+      "type": "integer"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
