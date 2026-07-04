@@ -64,6 +64,10 @@ For sensitive or family-like data, prefer this order:
 3. remote model with redacted context;
 4. remote tool only after explicit approval and audit tagging.
 
+## Runnable Demo
+
+See [examples/adapter-control-demo](../examples/adapter-control-demo/README.md) for a concrete redaction-policy flow before prompt, tool, artifact, log, and memory boundaries.
+
 ## Policy Contract
 
 Use `schemas/redaction-policy.schema.json` to describe:

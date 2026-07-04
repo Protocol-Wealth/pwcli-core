@@ -1,0 +1,21 @@
+{
+  "schemaRef": "../../../schemas/provenance.schema.json",
+  "name": "Adapter Control Provenance Receipt",
+  "summary": "Provenance receipt for an approved adapter-control run.",
+  "example": {
+    "entityId": "artifact:adapter-control:synthetic-receipt",
+    "activityId": "activity:adapter-control:demo-run",
+    "agentId": "adapter:claude-code",
+    "wasGeneratedBy": "approved_controlled_run",
+    "wasDerivedFrom": [
+      "source:repository:local-demo"
+    ],
+    "wasAttributedTo": "human_operator_approval",
+    "used": [
+      "claude-code",
+      "repository-agent-secret-boundary",
+      "adapter-control-preview"
+    ],
+    "generatedAtTime": "2026-07-03T00:00:00Z"
+  }
+}

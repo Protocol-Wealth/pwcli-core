@@ -83,6 +83,10 @@ Store where the input came from, who triggered the workflow, what tools were
 allowed, what data classes were present, which redaction policy ran, and what
 artifact was produced.
 
+## Runnable Demo
+
+See [examples/adapter-control-demo](../examples/adapter-control-demo/README.md) for a local demonstration of poisoned issue text boxed as data, redacted, approval-gated, and recorded in a provenance receipt.
+
 ## Runtime Adapter Metadata
 
 Use the `untrustedInputPolicy` field in

@@ -1,0 +1,26 @@
+{
+  "schemaRef": "../../../schemas/intent.schema.json",
+  "name": "Adapter Control Triage Intent",
+  "summary": "Intent telemetry for a poisoned issue triage request routed through adapter control.",
+  "example": {
+    "schemaVersion": "1.0.0",
+    "domain": "agent_control",
+    "intent": "agent_control:triage_untrusted_issue",
+    "confidence": 0.93,
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "sourceRefs": [
+      "source:repository:local-demo"
+    ],
+    "fallbackRoute": "/agent-control/review",
+    "candidatePanels": [
+      "adapter-control-preview"
+    ],
+    "reasonCodes": [
+      "source:issue",
+      "risk:prompt_injection",
+      "data:public_issue_text"
+    ],
+    "rawInputRef": "textarea:untrusted-input"
+  }
+}

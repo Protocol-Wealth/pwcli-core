@@ -1,0 +1,24 @@
+{
+  "schemaRef": "../../../schemas/source.schema.json",
+  "name": "Untrusted Issue Source",
+  "summary": "Synthetic source record for a poisoned issue body treated as descriptive metadata.",
+  "example": {
+    "id": "source:repository:local-demo",
+    "sourceType": "repository",
+    "protocol": "local_demo",
+    "metadataFormat": "text/plain",
+    "sourceIdentifier": "repository:issue-local-demo",
+    "sourceUrl": "local://adapter-control-demo/repository-issue",
+    "retrievedAt": "2026-07-03T00:00:00Z",
+    "rights": {
+      "status": "restricted",
+      "accessRights": "demo_only",
+      "reuseAllowed": false,
+      "humanReviewRequired": true,
+      "notes": "Synthetic public example; source text is treated as untrusted data."
+    },
+    "rawRecordRef": "textarea:untrusted-input",
+    "assertionLayer": "descriptive_source_metadata",
+    "humanReviewState": "pending"
+  }
+}

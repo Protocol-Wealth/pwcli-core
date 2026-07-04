@@ -59,6 +59,10 @@ runtime.
 6. Pause at an approval gate for state changes or sensitive data movement.
 7. Write provenance and artifact records after execution.
 
+## Runnable Demo
+
+See [examples/adapter-control-demo](../examples/adapter-control-demo/README.md) for a no-build browser example of untrusted input, adapter selection, redaction, approval, and provenance receipts.
+
 ## Non-Goal
 
 `pwcli-core` should not clone these runtimes. It should make them safer and more

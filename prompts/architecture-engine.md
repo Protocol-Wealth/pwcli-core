@@ -56,13 +56,13 @@ interoperability.
 Every query passed through the `pwcli-core` HSI layer must compile into a
 structured payload adhering to `intent.schema.json`, tracking:
 
-- `domain`: string, such as `tax`, `archive`, or `portfolio`.
+- `domain`: string, such as `travel`, `archive`, or `documents`.
 - `intent`: validated action state.
 - `confidence`: float from 0.0 to 1.0.
 - `sideEffectLevel`: `read_only`, `idempotent_mutation`, or `state_change`.
 - `approvalRequired`: boolean.
 - `sourceRefs`: traceable origin data references, such as `dc:title`.
-- `fallbackRoute`: hardcoded static URL backup, such as `/taxes`.
+- `fallbackRoute`: hardcoded static URL backup, such as `/travel`.
 - `candidatePanels`: pre-registered component IDs.
 
 ### Lifecycle States
