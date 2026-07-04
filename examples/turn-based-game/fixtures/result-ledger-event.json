@@ -1,0 +1,22 @@
+{
+  "schemaRef": "../schemas/result-ledger-event.schema.json",
+  "name": "Deterministic result ledger event",
+  "summary": "Example output artifact after approval and deterministic execution.",
+  "example": {
+    "id": "ledger-1",
+    "timestamp": "2026-07-03T00:00:01Z",
+    "actor": "player",
+    "intent": "card_play:pressure_raid",
+    "energySpent": 3,
+    "payload": {
+      "damageApplied": 45,
+      "energyDrained": 1,
+      "resultingPlayerEnergy": 2,
+      "resultingRivalHealth": 55,
+      "resultingRivalEnergy": 3
+    },
+    "sourceRefs": [
+      "state:turn-game:turn-1"
+    ]
+  }
+}

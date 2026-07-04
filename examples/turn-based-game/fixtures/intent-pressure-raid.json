@@ -1,0 +1,26 @@
+{
+  "schemaRef": "../../../schemas/intent.schema.json",
+  "name": "Pressure raid intent telemetry",
+  "summary": "Compiled synthetic command for a state-changing turn-based game card play.",
+  "example": {
+    "schemaVersion": "1.0.0",
+    "domain": "turn_game",
+    "intent": "card_play:pressure_raid",
+    "confidence": 0.96,
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "sourceRefs": [
+      "state:turn-game:turn-1"
+    ],
+    "fallbackRoute": "/turn-game/hand",
+    "candidatePanels": [
+      "turn-preview"
+    ],
+    "reasonCodes": [
+      "keyword:pressure_raid",
+      "target:rival_core",
+      "mode:intermediate"
+    ],
+    "rawInputRef": "local-demo-command"
+  }
+}

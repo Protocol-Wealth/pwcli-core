@@ -17,15 +17,17 @@ Managing Partner / CTO and a Certified Financial Planner professional.
 - Protocol Wealth GitHub: https://github.com/Protocol-Wealth
 - Nick Rygiel GitHub: https://github.com/rivendale
 
-## Related Protocol Wealth Open Source Projects
+## Related Open Source Projects
 
-These repositories are companion references and implementation inspiration. The
-`pwcli-core` specification remains neutral and reusable outside Protocol Wealth.
+These Protocol Wealth and maintainer repositories are companion references and
+implementation inspiration. The `pwcli-core` specification remains neutral and
+reusable outside Protocol Wealth.
 
 - `nexus-core`: https://github.com/Protocol-Wealth/nexus-core
 - `pwos-core`: https://github.com/Protocol-Wealth/pwos-core
 - `pwplan-core`: https://github.com/Protocol-Wealth/pwplan-core
 - `pw-learnai`: https://github.com/Protocol-Wealth/pw-learnai
+- `iocalc-agent-env`: https://github.com/rivendale/iocalc-agent-env
 
 ## Core Idea
 
@@ -98,6 +100,8 @@ Read these files in order:
 4. [docs/standards-map.md](docs/standards-map.md) for standards selection.
 5. [docs/context-packs.md](docs/context-packs.md) for context-pack structure.
 6. [docs/validation.md](docs/validation.md) for local and CI validation.
+7. [examples/turn-based-game/README.md](examples/turn-based-game/README.md) for a runnable browser demo.
+8. [docs/human-ux-guide.md](docs/human-ux-guide.md) for progressive disclosure patterns.
 
 ## Validation
 
@@ -109,6 +113,10 @@ npm run validate
 
 The same command runs in GitHub Actions on pull requests and pushes to `main`
 using Node 22 and Node 24.
+
+## Runnable Demo
+
+Open [examples/turn-based-game/index.html](examples/turn-based-game/index.html) in a browser for a no-build demo of command input, intent telemetry, registered primitive hydration, approval, deterministic execution, and return-focus ledger output.
 
 ## Example Query
 

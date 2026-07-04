@@ -110,6 +110,55 @@
     },
     "notes": {
       "type": "string"
+    },
+    "ux": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional human-facing preview and state-copy metadata for a registered primitive.",
+      "properties": {
+        "primaryAction": {
+          "type": "string",
+          "description": "Label for the primary action button when this primitive is shown."
+        },
+        "previewFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "riskLabels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "costFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "emptyState": {
+          "type": "string"
+        },
+        "loadingState": {
+          "type": "string"
+        },
+        "errorState": {
+          "type": "string"
+        },
+        "undoPolicy": {
+          "type": "string",
+          "enum": [
+            "immediate_rollback",
+            "checkpoint_restore",
+            "non_reversible"
+          ]
+        }
+      }
     }
   }
 }

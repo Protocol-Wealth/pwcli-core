@@ -73,7 +73,7 @@ function walk(dir) {
 }
 
 function textFiles() {
-  const allowedExts = new Set(['.md', '.txt', '.json', '.mjs', '.js', '.yml', '.yaml']);
+  const allowedExts = new Set(['.md', '.txt', '.json', '.mjs', '.js', '.yml', '.yaml', '.html', '.css']);
   const allowedBasenames = new Set(['LICENSE', '.gitignore']);
   return walk(root).filter((file) => allowedExts.has(path.extname(file)) || allowedBasenames.has(path.basename(file)));
 }
@@ -108,6 +108,101 @@ function rejectUnknownKeys(fileRel, obj, allowed, scope) {
   for (const key of Object.keys(obj)) {
     if (!allowed.has(key)) addError(fileRel, `${scope} has unknown key ${key}`);
   }
+}
+
+
+function expectBoolean(fileRel, obj, key, scope) {
+  if (typeof obj[key] !== 'boolean') addError(fileRel, `${scope} ${key} must be boolean`);
+}
+
+function expectNumberRange(fileRel, obj, key, min, max, scope) {
+  if (typeof obj[key] !== 'number' || obj[key] < min || obj[key] > max) {
+    addError(fileRel, `${scope} ${key} must be a number between ${min} and ${max}`);
+  }
+}
+
+function expectStringArray(fileRel, obj, key, scope, options = {}) {
+  if (!(key in obj)) {
+    if (options.optional) return;
+    addError(fileRel, `${scope} ${key} must be an array`);
+    return;
+  }
+  if (!Array.isArray(obj[key])) {
+    addError(fileRel, `${scope} ${key} must be an array`);
+    return;
+  }
+  if (options.minItems && obj[key].length < options.minItems) addError(fileRel, `${scope} ${key} must have at least ${options.minItems} item(s)`);
+  obj[key].forEach((item, index) => {
+    if (typeof item !== 'string' || item.trim() === '') addError(fileRel, `${scope} ${key}[${index}] must be a non-empty string`);
+  });
+}
+
+function validateIntentExample(fileRel, example) {
+  const allowed = new Set(['schemaVersion', 'domain', 'intent', 'confidence', 'sideEffectLevel', 'approvalRequired', 'sourceRefs', 'fallbackRoute', 'candidatePanels', 'clarifyingQuestions', 'reasonCodes', 'rawInputRef']);
+  rejectUnknownKeys(fileRel, example, allowed, 'intent example');
+  for (const key of ['schemaVersion', 'domain', 'intent', 'sideEffectLevel', 'fallbackRoute']) expectNonEmptyString(fileRel, example, key, 'intent example');
+  if (example.schemaVersion !== '1.0.0') addError(fileRel, 'intent example schemaVersion must be 1.0.0');
+  if (!['read_only', 'idempotent_mutation', 'state_change'].includes(example.sideEffectLevel)) addError(fileRel, 'intent example sideEffectLevel is invalid');
+  expectNumberRange(fileRel, example, 'confidence', 0, 1, 'intent example');
+  expectBoolean(fileRel, example, 'approvalRequired', 'intent example');
+  expectStringArray(fileRel, example, 'candidatePanels', 'intent example', { minItems: 1 });
+  expectStringArray(fileRel, example, 'sourceRefs', 'intent example', { optional: true });
+  expectStringArray(fileRel, example, 'clarifyingQuestions', 'intent example', { optional: true });
+  expectStringArray(fileRel, example, 'reasonCodes', 'intent example', { optional: true });
+}
+
+function validatePrimitiveExample(fileRel, example) {
+  const allowed = new Set(['id', 'title', 'summary', 'domain', 'kind', 'status', 'allowedIntents', 'inputSchemaRef', 'outputModes', 'fallbackRoute', 'sideEffectLevel', 'approvalRequired', 'sourceRequirements', 'supportsReturnFocus', 'publicSafe', 'notes', 'ux']);
+  rejectUnknownKeys(fileRel, example, allowed, 'primitive example');
+  for (const key of ['id', 'title', 'summary', 'domain', 'kind', 'status', 'fallbackRoute', 'sideEffectLevel']) expectNonEmptyString(fileRel, example, key, 'primitive example');
+  if (!['panel', 'card', 'chart', 'form', 'list', 'timeline', 'document_viewer', 'graph', 'wizard'].includes(example.kind)) addError(fileRel, 'primitive example kind is invalid');
+  if (!['active', 'beta', 'legacy', 'hidden', 'disabled'].includes(example.status)) addError(fileRel, 'primitive example status is invalid');
+  if (!['read_only', 'idempotent_mutation', 'state_change'].includes(example.sideEffectLevel)) addError(fileRel, 'primitive example sideEffectLevel is invalid');
+  expectStringArray(fileRel, example, 'allowedIntents', 'primitive example', { minItems: 1 });
+  expectStringArray(fileRel, example, 'sourceRequirements', 'primitive example', { optional: true });
+  expectBoolean(fileRel, example, 'approvalRequired', 'primitive example');
+  expectBoolean(fileRel, example, 'publicSafe', 'primitive example');
+  if ('supportsReturnFocus' in example) expectBoolean(fileRel, example, 'supportsReturnFocus', 'primitive example');
+  if ('ux' in example) {
+    const allowedUx = new Set(['primaryAction', 'previewFields', 'riskLabels', 'costFields', 'emptyState', 'loadingState', 'errorState', 'undoPolicy']);
+    if (!example.ux || typeof example.ux !== 'object' || Array.isArray(example.ux)) {
+      addError(fileRel, 'primitive example ux must be an object');
+    } else {
+      rejectUnknownKeys(fileRel, example.ux, allowedUx, 'primitive example ux');
+      for (const key of ['primaryAction', 'emptyState', 'loadingState', 'errorState', 'undoPolicy']) {
+        if (key in example.ux) expectNonEmptyString(fileRel, example.ux, key, 'primitive example ux');
+      }
+      for (const key of ['previewFields', 'riskLabels', 'costFields']) expectStringArray(fileRel, example.ux, key, 'primitive example ux', { optional: true });
+      if ('undoPolicy' in example.ux && !['immediate_rollback', 'checkpoint_restore', 'non_reversible'].includes(example.ux.undoPolicy)) {
+        addError(fileRel, 'primitive example ux undoPolicy is invalid');
+      }
+    }
+  }
+}
+
+function validateSourceExample(fileRel, example) {
+  const allowed = new Set(['id', 'sourceType', 'protocol', 'metadataFormat', 'sourceIdentifier', 'sourceUrl', 'retrievedAt', 'rights', 'provenanceRef', 'rawRecordRef', 'assertionLayer', 'confidence', 'humanReviewState']);
+  rejectUnknownKeys(fileRel, example, allowed, 'source example');
+  for (const key of ['id', 'sourceType', 'protocol', 'sourceIdentifier', 'retrievedAt', 'rawRecordRef', 'assertionLayer']) expectNonEmptyString(fileRel, example, key, 'source example');
+  if (!['descriptive_source_metadata', 'interpretive_ai_output'].includes(example.assertionLayer)) addError(fileRel, 'source example assertionLayer is invalid');
+  if ('confidence' in example) expectNumberRange(fileRel, example, 'confidence', 0, 1, 'source example');
+  if (!example.rights || typeof example.rights !== 'object' || Array.isArray(example.rights)) addError(fileRel, 'source example rights must be an object');
+}
+
+function validateProvenanceExample(fileRel, example) {
+  const allowed = new Set(['entityId', 'activityId', 'agentId', 'wasGeneratedBy', 'wasDerivedFrom', 'wasAttributedTo', 'used', 'startedAtTime', 'endedAtTime', 'generatedAtTime']);
+  rejectUnknownKeys(fileRel, example, allowed, 'provenance example');
+  for (const key of ['entityId', 'activityId', 'agentId', 'generatedAtTime']) expectNonEmptyString(fileRel, example, key, 'provenance example');
+  expectStringArray(fileRel, example, 'wasDerivedFrom', 'provenance example', { optional: true });
+  expectStringArray(fileRel, example, 'used', 'provenance example', { optional: true });
+}
+
+function validateKnownSchemaExample(fileRel, schemaRef, example) {
+  const schemaName = path.basename(schemaRef);
+  if (schemaName === 'intent.schema.json') validateIntentExample(fileRel, example);
+  if (schemaName === 'primitive.schema.json') validatePrimitiveExample(fileRel, example);
+  if (schemaName === 'source.schema.json') validateSourceExample(fileRel, example);
+  if (schemaName === 'provenance.schema.json') validateProvenanceExample(fileRel, example);
 }
 
 function validateSchemas() {
@@ -295,6 +390,51 @@ function validateContextPacks() {
   }
 }
 
+
+
+function validateExampleSchemas() {
+  const files = walk(path.join(root, 'examples')).filter((file) => file.endsWith('.schema.json')).sort();
+  for (const file of files) {
+    const fileRel = rel(file);
+    const schema = readJson(file);
+    if (!schema) continue;
+    for (const key of ['$schema', '$id', 'title', 'description', 'type', 'properties']) {
+      if (!(key in schema)) addError(fileRel, `missing required top-level key ${key}`);
+    }
+    if (schema.$schema !== 'https://json-schema.org/draft/2020-12/schema') addError(fileRel, 'must use JSON Schema Draft 2020-12');
+    if (schema.type !== 'object') addError(fileRel, 'top-level type must be object');
+    if (schema.additionalProperties !== false) addError(fileRel, 'top-level additionalProperties must be false');
+  }
+}
+
+function validateExampleFixtures() {
+  const files = walk(path.join(root, 'examples')).filter((file) => path.basename(path.dirname(file)) === 'fixtures' && file.endsWith('.json')).sort();
+  for (const file of files) {
+    const fileRel = rel(file);
+    const obj = readJson(file);
+    if (!obj) continue;
+    const allowed = new Set(['schemaRef', 'name', 'summary', 'example']);
+    rejectUnknownKeys(fileRel, obj, allowed, 'example fixture');
+    for (const key of ['schemaRef', 'name', 'summary']) expectNonEmptyString(fileRel, obj, key, 'example fixture');
+    if (!('example' in obj) || !obj.example || typeof obj.example !== 'object' || Array.isArray(obj.example)) {
+      addError(fileRel, 'example must be an object');
+    }
+    if (typeof obj.schemaRef === 'string') {
+      const resolved = path.resolve(path.dirname(file), obj.schemaRef);
+      const relativeTarget = path.relative(root, resolved);
+      if (relativeTarget.startsWith('..') || path.isAbsolute(relativeTarget)) {
+        addError(fileRel, `schemaRef escapes repository: ${obj.schemaRef}`);
+      } else if (!fs.existsSync(resolved)) {
+        addError(fileRel, `schemaRef does not resolve: ${obj.schemaRef}`);
+      } else if (!resolved.endsWith('.schema.json')) {
+        addError(fileRel, 'schemaRef must target a .schema.json file');
+      } else {
+        validateKnownSchemaExample(fileRel, obj.schemaRef, obj.example);
+      }
+    }
+  }
+}
+
 function validateMarkdownLinks() {
   const markdownFiles = walk(root).filter((file) => ['.md', '.txt'].includes(path.extname(file)) && !file.includes(`${path.sep}.git${path.sep}`));
   const linkPattern = /(?<!!)(?:\[[^\]]+\])\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
@@ -369,6 +509,8 @@ validateAsciiAndWhitespace();
 validateSchemas();
 validateCrosswalks();
 validateContextPacks();
+validateExampleSchemas();
+validateExampleFixtures();
 validateMarkdownLinks();
 validatePublicMarkers();
 validateSecrets();

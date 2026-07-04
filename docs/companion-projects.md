@@ -1,8 +1,8 @@
 # Companion Projects
 
 `pwcli-core` is a neutral public specification. The repositories below are
-related Protocol Wealth open-source projects that may provide implementation
-ideas, examples, or future integration references.
+related Protocol Wealth or maintainer open-source projects that may provide
+implementation ideas, examples, or future integration references.
 
 Maintainer context:
 
@@ -18,6 +18,7 @@ Maintainer context:
 | pwos-core | https://github.com/Protocol-Wealth/pwos-core | Potential reference for operating-system style control-plane patterns. |
 | pwplan-core | https://github.com/Protocol-Wealth/pwplan-core | Potential reference for planning workflows and structured decision records. |
 | pw-learnai | https://github.com/Protocol-Wealth/pw-learnai | Potential reference for education, AI literacy, and learning workflows. |
+| iocalc-agent-env | https://github.com/rivendale/iocalc-agent-env | Public Apache-2.0 reference for game-agent environment experiments and agent-facing simulation context. |
 
 ## Boundary
 

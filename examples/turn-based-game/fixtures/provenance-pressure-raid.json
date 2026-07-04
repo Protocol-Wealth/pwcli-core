@@ -1,0 +1,22 @@
+{
+  "schemaRef": "../../../schemas/provenance.schema.json",
+  "name": "Pressure raid provenance record",
+  "summary": "Synthetic provenance for a generated ledger event.",
+  "example": {
+    "entityId": "ledger:turn-game:pressure-raid-1",
+    "activityId": "activity:compile-preview-approve-execute",
+    "agentId": "agent:local-demo-parser",
+    "wasGeneratedBy": "execution:turn-game-pressure-raid",
+    "wasDerivedFrom": [
+      "state:turn-game:turn-1",
+      "intent:pressure-raid"
+    ],
+    "wasAttributedTo": "agent:local-demo-parser",
+    "used": [
+      "primitive:turn-preview"
+    ],
+    "startedAtTime": "2026-07-03T00:00:00Z",
+    "endedAtTime": "2026-07-03T00:00:01Z",
+    "generatedAtTime": "2026-07-03T00:00:01Z"
+  }
+}
