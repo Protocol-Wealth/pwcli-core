@@ -59,5 +59,6 @@ custom schemas.
 - [Family OS example](examples/family-os/README.md)
 - [Care portal example](examples/care-portal/README.md)
 - [Turn-based game intent demo](examples/turn-based-game/README.md)
+- [Adapter control demo](examples/adapter-control-demo/README.md)
 - [Runtime adapter examples](examples/runtime-adapters/README.md)
 - [Redaction policy examples](examples/redaction-policies/README.md)

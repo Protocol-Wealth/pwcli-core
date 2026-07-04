@@ -1,0 +1,51 @@
+{
+  "schemaRef": "../../../schemas/primitive.schema.json",
+  "name": "Adapter Control Preview Primitive",
+  "summary": "Registered primitive for previewing adapter, redaction, and approval metadata.",
+  "example": {
+    "id": "adapter-control-preview",
+    "title": "Adapter Control Preview",
+    "summary": "Preview runtime adapter, redaction policy, and output sinks before execution.",
+    "domain": "agent_control",
+    "kind": "panel",
+    "status": "active",
+    "allowedIntents": [
+      "agent_control:triage_untrusted_issue",
+      "agent_control:extract_private_document"
+    ],
+    "outputModes": [
+      "inline_panel"
+    ],
+    "fallbackRoute": "/agent-control/review",
+    "sideEffectLevel": "state_change",
+    "approvalRequired": true,
+    "sourceRequirements": [
+      "source.schema.json",
+      "runtime-adapter.schema.json",
+      "redaction-policy.schema.json"
+    ],
+    "supportsReturnFocus": true,
+    "publicSafe": true,
+    "ux": {
+      "primaryAction": "Approve Controlled Run",
+      "previewFields": [
+        "adapterId",
+        "policyId",
+        "redactionStages",
+        "outputSinks"
+      ],
+      "riskLabels": [
+        "Untrusted text may contain instructions",
+        "Output sinks can leak sensitive data"
+      ],
+      "costFields": [
+        "humanReviewRequired",
+        "auditRequired"
+      ],
+      "emptyState": "Compile untrusted input to preview the control plane.",
+      "loadingState": "Selecting adapter and redaction policy...",
+      "errorState": "Action blocked by policy validation.",
+      "undoPolicy": "checkpoint_restore"
+    }
+  }
+}

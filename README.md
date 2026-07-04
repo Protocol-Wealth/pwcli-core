@@ -108,9 +108,10 @@ Read these files in order:
 6. [docs/validation.md](docs/validation.md) for local and CI validation.
 7. [examples/turn-based-game/README.md](examples/turn-based-game/README.md) for a runnable browser demo.
 8. [docs/human-ux-guide.md](docs/human-ux-guide.md) for progressive disclosure patterns.
-9. [docs/agent-runtime-adapters.md](docs/agent-runtime-adapters.md) for using existing agent infrastructure.
-10. [docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md) for data and redaction policy.
-11. [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for prompt injection and agent poisoning controls.
+9. [examples/adapter-control-demo/README.md](examples/adapter-control-demo/README.md) for runtime adapter, redaction, approval, and provenance flow.
+10. [docs/agent-runtime-adapters.md](docs/agent-runtime-adapters.md) for using existing agent infrastructure.
+11. [docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md) for data and redaction policy.
+12. [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for prompt injection and agent poisoning controls.
 
 ## Validation
 
@@ -129,28 +130,28 @@ See [examples/runtime-adapters/README.md](examples/runtime-adapters/README.md) f
 
 ## Runnable Demo
 
-Open [examples/turn-based-game/index.html](examples/turn-based-game/index.html) in a browser for a no-build demo of command input, intent telemetry, registered primitive hydration, approval, deterministic execution, and return-focus ledger output.
+Open [examples/turn-based-game/index.html](examples/turn-based-game/index.html) in a browser for a no-build demo of command input, intent telemetry, registered primitive hydration, approval, deterministic execution, and return-focus ledger output. Open [examples/adapter-control-demo/index.html](examples/adapter-control-demo/index.html) for a no-build demo of untrusted input, runtime adapter selection, redaction policy, approval, and provenance receipts.
 
 ## Example Query
 
-Illustrative synthetic example only; not tax, accounting, investment, or financial advice.
+Illustrative synthetic example only; not a booking, emergency, or legal instruction.
 
 ```text
-User: Look at my taxes.
+User: Help me prep for our Chicago trip next week.
 
 Intent:
-- domain: tax
-- intent: review_tax_position
-- confidence: 0.82
+- domain: travel
+- intent: prepare_trip_plan
+- confidence: 0.84
 - sideEffectLevel: read_only
 - approvalRequired: false
-- fallbackRoute: /taxes
-- candidatePanels: [tax-summary-panel, document-gap-checklist]
+- fallbackRoute: /travel
+- candidatePanels: [trip-plan-panel, packing-checklist-panel]
 ```
 
-The conversational surface can hydrate a tax review panel, cite source records,
-and return focus to the command stream. If confidence is low, it falls back to a
-static route instead of inventing behavior.
+The conversational surface can hydrate a travel planning panel, cite source
+records, and return focus to the command stream. If confidence is low, it falls
+back to a static route instead of inventing behavior.
 
 ## License
 

@@ -220,11 +220,33 @@ function validatePrimitiveExample(fileRel, example) {
 
 function validateSourceExample(fileRel, example) {
   const allowed = new Set(['id', 'sourceType', 'protocol', 'metadataFormat', 'sourceIdentifier', 'sourceUrl', 'retrievedAt', 'rights', 'provenanceRef', 'rawRecordRef', 'assertionLayer', 'confidence', 'humanReviewState']);
+  const sourceTypes = new Set(['api', 'archive', 'dataset', 'document', 'web_page', 'repository', 'manual_entry']);
+  const assertionLayers = new Set(['descriptive_source_metadata', 'interpretive_ai_output']);
+  const reviewStates = new Set(['not_required', 'pending', 'approved', 'rejected']);
   rejectUnknownKeys(fileRel, example, allowed, 'source example');
   for (const key of ['id', 'sourceType', 'protocol', 'sourceIdentifier', 'retrievedAt', 'rawRecordRef', 'assertionLayer']) expectNonEmptyString(fileRel, example, key, 'source example');
-  if (!['descriptive_source_metadata', 'interpretive_ai_output'].includes(example.assertionLayer)) addError(fileRel, 'source example assertionLayer is invalid');
+  expectEnumString(fileRel, example, 'sourceType', sourceTypes, 'source example');
+  expectEnumString(fileRel, example, 'assertionLayer', assertionLayers, 'source example');
+  expectEnumString(fileRel, example, 'humanReviewState', reviewStates, 'source example', { optional: true });
   if ('confidence' in example) expectNumberRange(fileRel, example, 'confidence', 0, 1, 'source example');
-  if (!example.rights || typeof example.rights !== 'object' || Array.isArray(example.rights)) addError(fileRel, 'source example rights must be an object');
+  validateRightsMetadata(fileRel, example.rights);
+}
+
+function validateRightsMetadata(fileRel, rights) {
+  const scope = 'source example rights';
+  const allowed = new Set(['status', 'spdxExpression', 'rightsStatementUri', 'accessRights', 'reuseAllowed', 'humanReviewRequired', 'notes']);
+  const statuses = new Set(['open', 'restricted', 'unknown', 'private', 'public_domain']);
+  if (!rights || typeof rights !== 'object' || Array.isArray(rights)) {
+    addError(fileRel, `${scope} must be an object`);
+    return;
+  }
+  rejectUnknownKeys(fileRel, rights, allowed, scope);
+  expectEnumString(fileRel, rights, 'status', statuses, scope);
+  expectBoolean(fileRel, rights, 'reuseAllowed', scope);
+  expectBoolean(fileRel, rights, 'humanReviewRequired', scope);
+  for (const key of ['spdxExpression', 'rightsStatementUri', 'accessRights', 'notes']) {
+    expectNonEmptyString(fileRel, rights, key, scope, { optional: true });
+  }
 }
 
 function validateProvenanceExample(fileRel, example) {

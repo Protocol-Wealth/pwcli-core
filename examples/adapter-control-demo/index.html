@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pwcli-core Adapter Control Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">pwcli-core runnable example</p>
+      <h1>Untrusted input. Explicit adapter. Redacted context. Human approval.</h1>
+      <p class="lede">A small browser demo showing poisoned issue or document text compiled into intent telemetry, routed through a runtime adapter, filtered by redaction policy, and turned into a provenance receipt only after approval.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card console-card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">State A</p>
+            <h2>Untrusted Input</h2>
+          </div>
+          <span id="source-pill" class="pill muted">Issue</span>
+        </div>
+        <div class="sample-row" aria-label="Sample input choices">
+          <button id="sample-issue" type="button" class="secondary">Poisoned Issue</button>
+          <button id="sample-document" type="button" class="secondary">Uploaded Document</button>
+        </div>
+        <label for="untrusted-input">Incoming text</label>
+        <textarea id="untrusted-input" rows="8"></textarea>
+        <div class="button-row">
+          <button id="compile" type="button">Compile and Route</button>
+          <button id="approve" type="button" disabled>Approve Controlled Run</button>
+          <button id="reject" type="button" class="secondary" disabled>Reject</button>
+          <button id="reset" type="button" class="ghost">Reset</button>
+        </div>
+        <p class="hint">The input may contain instructions. In this demo those instructions remain data. The control plane selects only registered adapters and policies.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Bedrock</p>
+            <h2>Control Plane State</h2>
+          </div>
+          <span id="workflow-pill" class="pill">Console</span>
+        </div>
+        <dl id="state-grid" class="stat-grid"></dl>
+      </article>
+    </section>
+
+    <section class="grid lower">
+      <article class="card preview-card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">States B-D</p>
+            <h2>Adapter and Policy Preview</h2>
+          </div>
+          <span id="approval-pill" class="pill muted">Waiting</span>
+        </div>
+        <div id="preview" class="preview-empty">Compile input to select a registered runtime adapter and redaction policy.</div>
+      </article>
+
+      <article class="card receipt-card">
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">State E</p>
+            <h2>Provenance and Run Receipt</h2>
+          </div>
+        </div>
+        <div id="receipt" class="receipt-empty">No receipt yet.</div>
+      </article>
+    </section>
+  </main>
+  <script src="demo.js"></script>
+</body>
+</html>
