@@ -9,7 +9,7 @@ The project is intentionally not a chatbot framework. It is a control-plane
 blueprint for software that can feel conversational without surrendering runtime
 predictability. It is designed as a broad starting point that can wrap existing
 agent infrastructure instead of replacing it. Use OpenAI Agents SDK, LangGraph,
-MCP servers, A2A agents, Goose, Claude Code, or custom runtimes for execution;
+MCP servers, A2A agents, Goose, Claude Code, the Claude Agent SDK, or custom runtimes for execution;
 use `pwcli-core` for intent contracts, primitive selection, approvals,
 provenance, privacy, redaction, and data boundaries.
 
@@ -112,6 +112,7 @@ Read these files in order:
 10. [docs/agent-runtime-adapters.md](docs/agent-runtime-adapters.md) for using existing agent infrastructure.
 11. [docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md) for data and redaction policy.
 12. [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for prompt injection and agent poisoning controls.
+13. [examples/claude-agent-sdk-adapters/README.md](examples/claude-agent-sdk-adapters/README.md) for governed Python and TypeScript read-only reference adapters.
 
 ## Validation
 
@@ -127,6 +128,14 @@ using Node 22 and Node 24.
 ## Runtime Adapter Examples
 
 See [examples/runtime-adapters/README.md](examples/runtime-adapters/README.md) for synthetic adapter examples covering OpenAI Agents SDK, LangGraph, MCP servers, A2A agents, Goose, and Claude Code. See [examples/redaction-policies/README.md](examples/redaction-policies/README.md) for privacy and redaction policy examples. See [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for controls against prompt injection, poisoned issues, poisoned tool outputs, and workflow exfiltration.
+
+The [Claude Agent SDK reference adapters](examples/claude-agent-sdk-adapters/README.md)
+add equivalent Python and TypeScript one-shot implementations. They keep the SDK
+as the execution loop while `pwcli-core` owns the intent, fixed read-only tool
+surface, sensitive-path gate, redaction, and content-minimized
+[`run-receipt` schema](schemas/run-receipt.schema.json). They use documented API
+key or cloud-provider authentication only and explicitly separate permissions
+from sandboxing.
 
 ## Runnable Demo
 

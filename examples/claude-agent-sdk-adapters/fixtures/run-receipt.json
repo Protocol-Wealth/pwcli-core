@@ -1,0 +1,41 @@
+{
+  "schemaRef": "../../../schemas/run-receipt.schema.json",
+  "name": "Content-minimized Claude Agent SDK Run Receipt",
+  "summary": "Synthetic receipt that records policy evidence without prompt, output, tool arguments, or credentials.",
+  "example": {
+    "schemaVersion": "1.0.0",
+    "runId": "run:00000000-0000-4000-8000-000000000000",
+    "adapterId": "claude-agent-sdk-python",
+    "intentRef": "agent_control:read_only_repository_review",
+    "policyRef": "claude-agent-sdk-public-repo",
+    "status": "succeeded",
+    "startedAt": "2026-07-25T00:00:00Z",
+    "endedAt": "2026-07-25T00:00:01Z",
+    "authMode": "api_key",
+    "approval": {
+      "required": false,
+      "decision": "not_required",
+      "reason": "declared_read_only_intent"
+    },
+    "toolPolicy": {
+      "allowedTools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "permissionMode": "dontAsk",
+      "networkEgressPolicy": "none",
+      "toolEventCounts": {
+        "Read:allowed": 2
+      }
+    },
+    "redaction": {
+      "inputFindingCounts": {},
+      "outputFindingCounts": {
+        "email": 1
+      }
+    },
+    "resultDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "rawContentStored": false
+  }
+}

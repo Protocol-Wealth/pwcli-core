@@ -37,6 +37,15 @@ State-changing capabilities should include:
 - source/provenance references;
 - rollback or compensating-action notes where practical.
 
+Runtime permission settings are policy controls, not process isolation. Hosts
+that execute untrusted repositories or tool output must also constrain the
+process, filesystem, credentials, and network egress. The Claude Agent SDK
+reference adapters expose only a read-only tool set, reject sensitive paths,
+absolute paths, traversal, and symlink escapes, make the approval decision
+explicit, redact before and after the runtime loop, isolate or disable SDK
+session persistence, and retain content-minimized receipts; those controls do
+not turn the examples into a general-purpose sandbox.
+
 ## Reporting Issues
 
 Report security issues through private repository security reporting if enabled,

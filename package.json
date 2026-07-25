@@ -6,7 +6,10 @@
   "license": "MIT-0 OR Apache-2.0",
   "type": "module",
   "scripts": {
-    "validate": "node scripts/validate.mjs"
+    "validate": "npm run validate:spec && npm run test:python-adapter && npm run test:typescript-adapter",
+    "validate:spec": "node scripts/validate.mjs",
+    "test:python-adapter": "python3 -m unittest discover -s examples/claude-agent-sdk-adapters/python/tests -p 'test_*.py'",
+    "test:typescript-adapter": "node --experimental-strip-types examples/claude-agent-sdk-adapters/typescript/tests/adapter.test.ts"
   },
   "repository": {
     "type": "git",

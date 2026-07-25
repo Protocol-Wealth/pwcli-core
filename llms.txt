@@ -27,6 +27,7 @@ custom schemas.
 - [Agent-card-lite schema](schemas/agent-card-lite.schema.json): Minimal A2A-inspired delegation profile.
 - [Runtime adapter schema](schemas/runtime-adapter.schema.json): Metadata for wrapping existing agent runtimes with control-plane policy.
 - [Redaction policy schema](schemas/redaction-policy.schema.json): Privacy, data-classification, and redaction policy metadata.
+- [Run receipt schema](schemas/run-receipt.schema.json): Content-minimized runtime evidence without prompts, outputs, tool arguments, or credentials.
 
 ## Docs
 
@@ -61,4 +62,5 @@ custom schemas.
 - [Turn-based game intent demo](examples/turn-based-game/README.md)
 - [Adapter control demo](examples/adapter-control-demo/README.md)
 - [Runtime adapter examples](examples/runtime-adapters/README.md)
+- [Claude Agent SDK reference adapters](examples/claude-agent-sdk-adapters/README.md)
 - [Redaction policy examples](examples/redaction-policies/README.md)

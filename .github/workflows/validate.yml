@@ -29,5 +29,43 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Run repository validation
         run: npm run validate
+
+  sdk-package-contract:
+    name: Pinned SDK package contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: examples/claude-agent-sdk-adapters/typescript/package-lock.json
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build and install pinned Python adapter
+        run: python -m pip install ./examples/claude-agent-sdk-adapters/python
+      - name: Construct pinned Python SDK options
+        run: python examples/claude-agent-sdk-adapters/python/sdk_contract_smoke.py
+      - name: Install pinned TypeScript adapter
+        run: npm ci --prefix examples/claude-agent-sdk-adapters/typescript
+      - name: Audit TypeScript production dependencies
+        run: npm audit --omit=dev --prefix examples/claude-agent-sdk-adapters/typescript
+      - name: Typecheck pinned TypeScript SDK options
+        run: npm run typecheck --prefix examples/claude-agent-sdk-adapters/typescript
+      - name: Rerun TypeScript adapter suite
+        run: npm run test --prefix examples/claude-agent-sdk-adapters/typescript
+      - name: Rerun Python adapter suite
+        run: npm run test:python-adapter

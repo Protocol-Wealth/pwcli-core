@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol-wealth.github.io/pwcli-core/schemas/run-receipt.schema.json",
+  "title": "pwcli-core Run Receipt",
+  "description": "Content-minimized evidence for one governed runtime-adapter execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "adapterId",
+    "intentRef",
+    "policyRef",
+    "status",
+    "startedAt",
+    "endedAt",
+    "authMode",
+    "approval",
+    "toolPolicy",
+    "redaction",
+    "resultDigest",
+    "rawContentStored"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^run:[a-f0-9-]+$"
+    },
+    "adapterId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "intentRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policyRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "succeeded",
+        "denied",
+        "failed"
+      ]
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "endedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authMode": {
+      "type": "string",
+      "enum": [
+        "api_key",
+        "bedrock",
+        "anthropic_aws",
+        "vertex",
+        "foundry",
+        "unavailable"
+      ]
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "decision",
+        "reason"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "required"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "declared_read_only_intent",
+            "intent_outside_read_only_reference_path"
+          ]
+        }
+      }
+    },
+    "toolPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowedTools",
+        "permissionMode",
+        "networkEgressPolicy",
+        "toolEventCounts"
+      ],
+      "properties": {
+        "allowedTools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "permissionMode": {
+          "type": "string",
+          "const": "dontAsk"
+        },
+        "networkEgressPolicy": {
+          "type": "string",
+          "const": "none"
+        },
+        "toolEventCounts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inputFindingCounts",
+        "outputFindingCounts"
+      ],
+      "properties": {
+        "inputFindingCounts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "outputFindingCounts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "resultDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "errorCode": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_:-]*$"
+    },
+    "rawContentStored": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}

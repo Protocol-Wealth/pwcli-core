@@ -113,7 +113,8 @@ See [schemas/primitive.schema.json](schemas/primitive.schema.json) and [docs/hum
 
 `pwcli-core` can wrap existing agent infrastructure without importing or
 reimplementing it. Runtime adapters describe how external systems such as
-OpenAI Agents SDK, LangGraph, MCP servers, A2A agents, Goose, Claude Code, or
+OpenAI Agents SDK, LangGraph, MCP servers, A2A agents, Goose, Claude Code, the
+Claude Agent SDK, or
 custom runtimes fit into the control plane.
 
 Runtime adapters must declare:
@@ -130,7 +131,16 @@ Redaction policies must declare the sensitive data classes, redaction stages,
 actions, default handling, human-review requirement, audit requirement, and
 retention expectation. Runtime adapters must also declare untrusted input
 handling so poisoned issues, comments, documents, tool outputs, or external
-agent results do not become trusted instructions. See [schemas/runtime-adapter.schema.json](schemas/runtime-adapter.schema.json), [schemas/redaction-policy.schema.json](schemas/redaction-policy.schema.json), [docs/agent-runtime-adapters.md](docs/agent-runtime-adapters.md), [docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md), and [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md).
+agent results do not become trusted instructions. Run receipts must minimize
+content: record policy identifiers, timestamps, event counts, redaction counts,
+and result digests rather than prompts, outputs, tool arguments, credentials, or
+transcripts. See [schemas/runtime-adapter.schema.json](schemas/runtime-adapter.schema.json),
+[schemas/redaction-policy.schema.json](schemas/redaction-policy.schema.json),
+[schemas/run-receipt.schema.json](schemas/run-receipt.schema.json),
+[docs/agent-runtime-adapters.md](docs/agent-runtime-adapters.md),
+[docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md),
+[docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md), and the
+[Claude Agent SDK reference adapters](examples/claude-agent-sdk-adapters/README.md).
 
 ## 8. Context Packs
 

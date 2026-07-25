@@ -36,6 +36,7 @@
         "a2a_agent",
         "goose",
         "claude_code",
+        "claude_agent_sdk",
         "custom"
       ]
     },

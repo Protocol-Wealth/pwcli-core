@@ -1,0 +1,59 @@
+{
+  "schemaRef": "../../../schemas/runtime-adapter.schema.json",
+  "name": "Claude Agent SDK Python Reference Adapter",
+  "summary": "Governed read-only reference adapter for the official Python SDK.",
+  "example": {
+    "id": "claude-agent-sdk-python",
+    "runtime": "claude_agent_sdk",
+    "title": "Claude Agent SDK Python Reference Adapter",
+    "summary": "Read-only one-shot adapter with explicit tool, data, redaction, and receipt boundaries.",
+    "executionMode": "local",
+    "language": "python",
+    "license": "MIT-0 OR Apache-2.0",
+    "docsUrl": "https://code.claude.com/docs/en/agent-sdk/python",
+    "sideEffectLevel": "read_only",
+    "approvalRequired": false,
+    "auditRequired": true,
+    "redactionRequired": true,
+    "dataAccess": [
+      "files",
+      "code",
+      "tool_outputs"
+    ],
+    "allowedDataClasses": [
+      "public"
+    ],
+    "controlPlaneResponsibilities": [
+      "intent_validation",
+      "read_only_tool_surface",
+      "sensitive_path_denial",
+      "redaction_before_prompt",
+      "content_minimized_receipt"
+    ],
+    "integrationBoundary": "The SDK executes the agent loop; pwcli-core fixtures and adapter code own intent, policy, redaction, tool gates, and receipt shape.",
+    "redactionPolicyRefs": [
+      "claude-agent-sdk-public-repo"
+    ],
+    "mcpCompatible": false,
+    "a2aCompatible": false,
+    "publicSafe": true,
+    "notes": "Provider API traffic is required. Agent tools have no network or mutation capability; host isolation remains a separate control.",
+    "untrustedInputPolicy": {
+      "inputSources": [
+        "manual",
+        "repo_file"
+      ],
+      "triggerPolicy": "trusted_human_only",
+      "secretExposureAllowed": false,
+      "networkEgressPolicy": "none",
+      "tokenPermissions": [],
+      "defenses": [
+        "quote_untrusted_input",
+        "ignore_source_instructions",
+        "secret_scrub",
+        "tool_argument_allowlist",
+        "provenance_logging"
+      ]
+    }
+  }
+}
