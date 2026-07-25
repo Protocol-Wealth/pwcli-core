@@ -17,6 +17,10 @@ Use existing runtimes for execution. Use `pwcli-core` for governance.
   approval requirements, source/assertion separation, artifact provenance, and
   data boundary declarations.
 
+Runtime conversation/session state, deterministic application state, approval
+state, and audit evidence are separate types. A runtime session identifier must
+not become authorization, application truth, or the audit record by accident.
+
 ## Runtime Fit
 
 | Runtime | Use it for | `pwcli-core` control-plane layer |
@@ -27,6 +31,7 @@ Use existing runtimes for execution. Use `pwcli-core` for governance.
 | A2A agent | Agent-to-agent discovery, delegation, and result exchange. | Agent-card-lite mapping, delegation approval, trust boundary, and provenance of delegated work. |
 | Goose | Local-first desktop, CLI, API, provider-flexible agent execution, and MCP extension use. | Local data boundaries, approval gates, run receipts, and redaction before external provider calls. |
 | Claude Code | Repo automation, code review, coding sessions, instructions, skills, hooks, and MCP-connected development workflows. | AGENTS/CLAUDE instruction discipline, review gates, PR artifact contracts, and privacy-safe context packs. |
+| Claude Agent SDK | The Claude Code agent loop embedded in Python or TypeScript applications. | Intent/auth policy, tool allowlists and hooks, an explicit approval decision, redaction, and content-minimized run receipts. |
 
 ## Adapter Contract
 
@@ -62,6 +67,18 @@ runtime.
 ## Runnable Demo
 
 See [examples/adapter-control-demo](../examples/adapter-control-demo/README.md) for a no-build browser example of untrusted input, adapter selection, redaction, approval, and provenance receipts.
+
+For executable Python and TypeScript examples around the official Claude Agent
+SDK, see
+[examples/claude-agent-sdk-adapters](../examples/claude-agent-sdk-adapters/README.md).
+The first reference path is deliberately read-only. It records
+`approval.decision = not_required` for the exact read-only intent and denies
+other intent references before the SDK loop. Later write-capable adapters must
+provide a real approval implementation rather than inheriting that decision.
+The examples compile the shared intent/runtime/redaction fixtures, confine
+file-bearing tool calls to the canonical workspace, validate minimized receipts,
+disable TypeScript session persistence, and isolate Python's unavoidable SDK
+session files in a deleted per-run directory.
 
 ## Non-Goal
 

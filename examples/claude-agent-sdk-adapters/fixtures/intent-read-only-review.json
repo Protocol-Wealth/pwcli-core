@@ -1,0 +1,25 @@
+{
+  "schemaRef": "../../../schemas/intent.schema.json",
+  "name": "Read-only Repository Review Intent",
+  "summary": "Synthetic intent for a governed read-only repository review.",
+  "example": {
+    "schemaVersion": "1.0.0",
+    "domain": "agent_control",
+    "intent": "agent_control:read_only_repository_review",
+    "confidence": 1,
+    "sideEffectLevel": "read_only",
+    "approvalRequired": false,
+    "sourceRefs": [
+      "source:manual:synthetic-review"
+    ],
+    "fallbackRoute": "/agent-control/review",
+    "candidatePanels": [
+      "adapter-control-preview"
+    ],
+    "reasonCodes": [
+      "scope:read_only",
+      "egress:none",
+      "data:public"
+    ]
+  }
+}

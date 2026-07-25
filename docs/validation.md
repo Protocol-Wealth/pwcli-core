@@ -25,13 +25,18 @@ The GitHub Actions workflow runs the same command on pull requests and pushes to
   `humanReviewRequired`.
 - Every `context-pack/*.md` file has YAML frontmatter matching the repository's
   context-pack convention.
-- Example-local `.schema.json` files parse, and fixture JSON files declare a resolvable `schemaRef`, `name`, `summary`, and `example`; core, runtime-adapter, and redaction-policy fixtures receive lightweight shape checks.
+- Example-local `.schema.json` files parse, and fixture JSON files declare a resolvable `schemaRef`, `name`, `summary`, and `example`; core, runtime-adapter, redaction-policy, and run-receipt fixtures receive lightweight shape checks.
 - Markdown local links resolve.
 - Public metadata markers are present in root docs.
 - Text files are ASCII-only, use LF line endings, avoid trailing whitespace, and
   end with a newline.
 - Simple secret-pattern scans pass.
 - The GitHub Actions validation workflow exists and calls `npm run validate`.
+- The Python and TypeScript Claude Agent SDK reference-adapter tests pass with
+  injected fake runtimes and no provider call.
+- The dependency-aware CI job builds/installs the Python package, constructs
+  options against the pinned Python SDK, installs the pinned TypeScript SDK,
+  typechecks against its API, and reruns both suites.
 
 ## Example Failure
 
@@ -48,6 +53,8 @@ maturity: pattern_only
 ## Design Notes
 
 This is not a replacement for full JSON Schema validation libraries. It is a
-small project-control validator for the spec itself. If the repo later adds a
-reference implementation or CLI package, a future PR can add AJV or another
-standards-complete validator behind an explicit dependency decision.
+small project-control validator for the spec and reference examples. The
+Claude Agent SDK packages are isolated in nested example manifests and are not
+installed by the root validator. Pull-request CI separately exercises those
+pinned dependencies and package boundaries. A production package can add AJV or
+another standards-complete validator behind an explicit dependency decision.

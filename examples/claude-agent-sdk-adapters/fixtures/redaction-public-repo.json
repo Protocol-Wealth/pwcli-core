@@ -1,0 +1,37 @@
+{
+  "schemaRef": "../../../schemas/redaction-policy.schema.json",
+  "name": "Claude Agent SDK Public Repository Boundary",
+  "summary": "Blocks secrets and masks direct identifiers before prompts, tool results, output, and receipts.",
+  "example": {
+    "id": "claude-agent-sdk-public-repo",
+    "title": "Claude Agent SDK Public Repository Boundary",
+    "summary": "Limit the reference adapter to public repository content and content-minimized receipts.",
+    "scope": "all",
+    "dataClasses": [
+      "pii",
+      "secrets",
+      "restricted"
+    ],
+    "redactionStages": [
+      "before_prompt",
+      "before_tool",
+      "before_artifact",
+      "before_external_call",
+      "before_log"
+    ],
+    "actions": [
+      "mask",
+      "block"
+    ],
+    "defaultHandling": "block",
+    "humanReviewRequired": false,
+    "auditRequired": true,
+    "retention": "durable_audit",
+    "appliesToRuntimeRefs": [
+      "claude-agent-sdk-python",
+      "claude-agent-sdk-typescript"
+    ],
+    "publicSafe": true,
+    "notes": "The example redactor is a deterministic tripwire, not proof that arbitrary content is de-identified."
+  }
+}

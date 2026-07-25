@@ -73,7 +73,7 @@ function walk(dir) {
 }
 
 function textFiles() {
-  const allowedExts = new Set(['.md', '.txt', '.json', '.mjs', '.js', '.yml', '.yaml', '.html', '.css']);
+  const allowedExts = new Set(['.md', '.txt', '.json', '.mjs', '.js', '.ts', '.py', '.toml', '.yml', '.yaml', '.html', '.css']);
   const allowedBasenames = new Set(['LICENSE', '.gitignore']);
   return walk(root).filter((file) => allowedExts.has(path.extname(file)) || allowedBasenames.has(path.basename(file)));
 }
@@ -282,7 +282,7 @@ function validateRuntimeAdapterExample(fileRel, example) {
     'notes',
     'untrustedInputPolicy'
   ]);
-  const runtimeValues = new Set(['openai_agents', 'langgraph', 'mcp_server', 'a2a_agent', 'goose', 'claude_code', 'custom']);
+  const runtimeValues = new Set(['openai_agents', 'langgraph', 'mcp_server', 'a2a_agent', 'goose', 'claude_code', 'claude_agent_sdk', 'custom']);
   const executionModes = new Set(['local', 'remote', 'sandboxed', 'managed_service', 'hybrid']);
   const sideEffectLevels = new Set(['read_only', 'idempotent_mutation', 'state_change']);
   const dataAccessValues = new Set(['files', 'database', 'browser', 'email', 'documents', 'code', 'calendar', 'private_records', 'tool_outputs', 'memory', 'network', 'none']);
@@ -399,6 +399,65 @@ function validateRedactionPolicyExample(fileRel, example) {
   }
 }
 
+function validateRunReceiptExample(fileRel, example) {
+  const allowed = new Set([
+    'schemaVersion',
+    'runId',
+    'adapterId',
+    'intentRef',
+    'policyRef',
+    'status',
+    'startedAt',
+    'endedAt',
+    'authMode',
+    'approval',
+    'toolPolicy',
+    'redaction',
+    'resultDigest',
+    'errorCode',
+    'rawContentStored'
+  ]);
+  rejectUnknownKeys(fileRel, example, allowed, 'run receipt example');
+  for (const key of ['schemaVersion', 'runId', 'adapterId', 'intentRef', 'policyRef', 'status', 'startedAt', 'endedAt', 'authMode', 'resultDigest']) {
+    expectNonEmptyString(fileRel, example, key, 'run receipt example');
+  }
+  if (example.schemaVersion !== '1.0.0') addError(fileRel, 'run receipt example schemaVersion must be 1.0.0');
+  expectEnumString(fileRel, example, 'status', new Set(['succeeded', 'denied', 'failed']), 'run receipt example');
+  expectEnumString(fileRel, example, 'authMode', new Set(['api_key', 'bedrock', 'anthropic_aws', 'vertex', 'foundry', 'unavailable']), 'run receipt example');
+  expectBoolean(fileRel, example, 'rawContentStored', 'run receipt example');
+  if (example.rawContentStored !== false) addError(fileRel, 'run receipt example rawContentStored must remain false');
+  if (!example.approval || typeof example.approval !== 'object' || Array.isArray(example.approval)) {
+    addError(fileRel, 'run receipt example approval must be an object');
+  } else {
+    expectBoolean(fileRel, example.approval, 'required', 'run receipt example approval');
+    expectNonEmptyString(fileRel, example.approval, 'decision', 'run receipt example approval');
+    expectNonEmptyString(fileRel, example.approval, 'reason', 'run receipt example approval');
+    if (example.approval.required !== false || example.approval.decision !== 'not_required') {
+      addError(fileRel, 'read-only run receipt example approval must be explicitly not_required');
+    }
+  }
+  if (!/^sha256:[a-f0-9]{64}$/.test(example.resultDigest || '')) addError(fileRel, 'run receipt example resultDigest must be a SHA-256 marker');
+  if (!example.toolPolicy || typeof example.toolPolicy !== 'object' || Array.isArray(example.toolPolicy)) {
+    addError(fileRel, 'run receipt example toolPolicy must be an object');
+  } else {
+    expectStringArray(fileRel, example.toolPolicy, 'allowedTools', 'run receipt example toolPolicy');
+    if (example.toolPolicy.permissionMode !== 'dontAsk') addError(fileRel, 'run receipt example permissionMode must be dontAsk');
+    if (example.toolPolicy.networkEgressPolicy !== 'none') addError(fileRel, 'run receipt example networkEgressPolicy must be none');
+    if (!example.toolPolicy.toolEventCounts || typeof example.toolPolicy.toolEventCounts !== 'object' || Array.isArray(example.toolPolicy.toolEventCounts)) {
+      addError(fileRel, 'run receipt example toolEventCounts must be an object');
+    }
+  }
+  if (!example.redaction || typeof example.redaction !== 'object' || Array.isArray(example.redaction)) {
+    addError(fileRel, 'run receipt example redaction must be an object');
+  } else {
+    for (const key of ['inputFindingCounts', 'outputFindingCounts']) {
+      if (!example.redaction[key] || typeof example.redaction[key] !== 'object' || Array.isArray(example.redaction[key])) {
+        addError(fileRel, `run receipt example redaction ${key} must be an object`);
+      }
+    }
+  }
+}
+
 function validateKnownSchemaExample(fileRel, schemaRef, example) {
   const schemaName = path.basename(schemaRef);
   if (schemaName === 'intent.schema.json') validateIntentExample(fileRel, example);
@@ -407,6 +466,7 @@ function validateKnownSchemaExample(fileRel, schemaRef, example) {
   if (schemaName === 'provenance.schema.json') validateProvenanceExample(fileRel, example);
   if (schemaName === 'runtime-adapter.schema.json') validateRuntimeAdapterExample(fileRel, example);
   if (schemaName === 'redaction-policy.schema.json') validateRedactionPolicyExample(fileRel, example);
+  if (schemaName === 'run-receipt.schema.json') validateRunReceiptExample(fileRel, example);
 }
 
 function validateSchemas() {

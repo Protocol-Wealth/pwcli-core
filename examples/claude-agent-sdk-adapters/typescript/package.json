@@ -1,0 +1,21 @@
+{
+  "name": "pwcli-claude-agent-sdk-reference",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "0.3.220"
+  },
+  "overrides": {
+    "@hono/node-server": "2.0.10"
+  },
+  "scripts": {
+    "review": "node --experimental-strip-types src/cli.ts",
+    "test": "node --experimental-strip-types tests/adapter.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "typescript": "7.0.2"
+  }
+}
