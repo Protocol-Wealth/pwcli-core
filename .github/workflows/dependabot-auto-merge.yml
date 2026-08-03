@@ -26,14 +26,14 @@ jobs:
       #
       # NOTE: the merge step below MUST pass --auto. These repos are branch-
       # protected now, and a bare `gh pr merge` requests an *immediate* merge,
-      # which protection rejects with "base branch policy prohibits the merge" —
+      # which protection rejects with "base branch policy prohibits the merge" --
       # the job then exits 1 and the PR silently sits open. That defect stalled
-      # the whole estate dependency queue for five days (2026-07-27 → 08-01).
+      # the whole estate dependency queue for five days (2026-07-27 -> 08-01).
       # --auto arms GitHub-native auto-merge instead, which waits for protection
       # to be satisfied and then merges.
       #
       # Pure bash so we don't depend on third-party actions (keeps the
-      # allow-list minimal and transparent — `gh` and `jq` are
+      # allow-list minimal and transparent -- `gh` and `jq` are
       # pre-installed on ubuntu-latest).
       - name: Wait for other CI checks to pass
         if: steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
@@ -50,7 +50,7 @@ jobs:
           #
           # THE EXCLUSION MUST MATCH THE JOB NAME, NOT THE WORKFLOW NAME.
           #
-          # This used to be `self="Dependabot Auto-Merge"` — the WORKFLOW name
+          # This used to be `self="Dependabot Auto-Merge"` -- the WORKFLOW name
           # (line 1). But the check-runs API reports the JOB name (`auto-merge`).
           # The exclusion therefore matched NOTHING, so this step sat waiting for
           # ITSELF to complete, polled for the full 30 minutes, and failed on the
@@ -65,7 +65,7 @@ jobs:
           #
           # This step runs under `set -euo pipefail`, so an un-guarded `gh api`
           # failure (rate limit, transient 5xx) would abort the whole step and
-          # leave the PR red forever with no retry — a failure mode the old
+          # leave the PR red forever with no retry -- a failure mode the old
           # scalar assignment could not have. So the fetch is guarded, and it
           # falls back to THIS JOB'S OWN NAME rather than to an empty set:
           # an empty exclusion would put us back in the wait set and re-create
@@ -95,33 +95,33 @@ jobs:
               'select(.name as $n | ($self | index($n)) == null)')
 
             if [ -z "$others" ]; then
-              echo "No other checks found yet — waiting 30s"
+              echo "No other checks found yet -- waiting 30s"
               sleep 30
               continue
             fi
 
             running=$(echo "$others" | jq -s '[.[] | select(.status != "completed")] | length')
             if [ "$running" -gt 0 ]; then
-              echo "[$(date -u +%H:%M:%S)] $running checks still running — polling again in 30s"
+              echo "[$(date -u +%H:%M:%S)] $running checks still running -- polling again in 30s"
               sleep 30
               continue
             fi
 
             # Success conclusions we accept: success, skipped, neutral.
             # Anything else (failure, cancelled, timed_out, action_required,
-            # stale) means a human should review — do not auto-merge.
+            # stale) means a human should review -- do not auto-merge.
             failed=$(echo "$others" | jq -s '[.[] | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")] | length')
             if [ "$failed" -gt 0 ]; then
-              echo "❌ $failed checks did NOT succeed — skipping auto-merge."
+              echo "FAIL: $failed checks did NOT succeed -- skipping auto-merge."
               echo "$others" | jq -s '.[] | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")'
               exit 1
             fi
 
-            echo "✅ All $(echo "$others" | jq -s 'length') non-self checks succeeded."
+            echo "OK: All $(echo "$others" | jq -s 'length') non-self checks succeeded."
             exit 0
           done
 
-          echo "⏰ Timed out after 30 min waiting for checks."
+          echo "[timeout] Timed out after 30 min waiting for checks."
           exit 1
 
       - name: Auto-merge minor and patch updates
