@@ -113,6 +113,7 @@ Read these files in order:
 11. [docs/privacy-redaction-control-plane.md](docs/privacy-redaction-control-plane.md) for data and redaction policy.
 12. [docs/agent-poisoning-defense.md](docs/agent-poisoning-defense.md) for prompt injection and agent poisoning controls.
 13. [examples/claude-agent-sdk-adapters/README.md](examples/claude-agent-sdk-adapters/README.md) for governed Python and TypeScript read-only reference adapters.
+14. [docs/context-budget-and-memory.md](docs/context-budget-and-memory.md) for scoped retrieval, context budgets, and safe handoffs.
 
 ## Validation
 

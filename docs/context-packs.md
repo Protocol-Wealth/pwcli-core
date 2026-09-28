@@ -35,3 +35,6 @@ lastReviewed: 2026-07-03
 - Do not store secrets.
 - Do not store private user data.
 - Review context packs like code because agents may follow them.
+
+See [context budgets and memory boundaries](context-budget-and-memory.md) for
+runtime retrieval, handoff, and learned-instruction review guidance.
