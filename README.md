@@ -165,8 +165,9 @@ back to a static route instead of inventing behavior.
 
 ## License
 
-Licensed under `MIT-0 OR Apache-2.0`.
+Licensed under either MIT-0 or Apache-2.0, at your option.
 
-You may use the frictionless MIT-0 terms or the Apache 2.0 terms with an
-explicit patent grant. See [LICENSE-MIT-0](LICENSE-MIT-0) and
-[LICENSE-APACHE-2.0](LICENSE-APACHE-2.0).
+- MIT No Attribution: [LICENSE-MIT-0](LICENSE-MIT-0)
+- Apache License 2.0: [LICENSE-APACHE](LICENSE-APACHE)
+
+SPDX-License-Identifier: `MIT-0 OR Apache-2.0`
