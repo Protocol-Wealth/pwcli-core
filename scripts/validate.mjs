@@ -74,7 +74,7 @@ function walk(dir) {
 
 function textFiles() {
   const allowedExts = new Set(['.md', '.txt', '.json', '.mjs', '.js', '.ts', '.py', '.toml', '.yml', '.yaml', '.html', '.css']);
-  const allowedBasenames = new Set(['LICENSE', '.gitignore']);
+  const allowedBasenames = new Set(['LICENSE-MIT-0', 'LICENSE-APACHE', '.gitignore']);
   return walk(root).filter((file) => allowedExts.has(path.extname(file)) || allowedBasenames.has(path.basename(file)));
 }
 
@@ -756,7 +756,9 @@ function validatePublicMarkers() {
     ['README.md', 'Standards Before Invention'],
     ['README.md', 'https://github.com/Protocol-Wealth/nexus-core'],
     ['README.md', 'https://github.com/rivendale'],
-    ['LICENSE', 'SPDX-License-Identifier: MIT-0 OR Apache-2.0'],
+    ['README.md', 'Licensed under either MIT-0 or Apache-2.0, at your option.'],
+    ['LICENSE-MIT-0', 'MIT No Attribution'],
+    ['LICENSE-APACHE', 'Apache License'],
     ['CONTRIBUTING.md', '## Contribution Licensing'],
     ['SECURITY.md', 'AI must not'],
     ['AGENTS.md', 'npm run validate'],
