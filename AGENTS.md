@@ -24,10 +24,15 @@ intent-driven, dual-engine applications.
 
 ## Expected Checks
 
+For changes under `examples/claude-agent-sdk-adapters/typescript/`, also run
+`npm ci`, `npm audit --omit=dev`, `npm run typecheck` and `npm run test` with
+`--prefix examples/claude-agent-sdk-adapters/typescript` (CI's second job).
+
 For docs/spec/schema changes:
 
 ```bash
 npm run validate
 ```
 
-The validator includes JSON parsing, schema metadata checks, crosswalk shape checks, context-pack frontmatter checks, local Markdown link checks, ASCII/LF/trailing-whitespace hygiene, required public markers, simple secret scans, and workflow presence checks.
+The validator includes JSON parsing, schema metadata checks, crosswalk shape checks, context-pack frontmatter checks, local Markdown link checks, ASCII/LF/trailing-whitespace hygiene, required public markers, simple secret scans, and workflow presence checks. `npm run validate` also runs
+the Python and TypeScript SDK adapter tests, so it needs `python3` and Node 22+.
