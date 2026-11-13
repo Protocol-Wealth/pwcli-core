@@ -172,4 +172,4 @@ education, healthcare-adjacent, finance, and enterprise-applicable contexts.
 - https://github.com/Protocol-Wealth/nexus-core
 - https://github.com/Protocol-Wealth/pwos-core
 - https://github.com/Protocol-Wealth/pwplan-core
-- https://github.com/Protocol-Wealth/pw-learnai
+- https://github.com/Protocol-Wealth/pw-learnai-core

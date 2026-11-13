@@ -30,7 +30,7 @@ reusable outside Protocol Wealth.
 - `nexus-core`: https://github.com/Protocol-Wealth/nexus-core
 - `pwos-core`: https://github.com/Protocol-Wealth/pwos-core
 - `pwplan-core`: https://github.com/Protocol-Wealth/pwplan-core
-- `pw-learnai`: https://github.com/Protocol-Wealth/pw-learnai
+- `pw-learnai-core`: https://github.com/Protocol-Wealth/pw-learnai-core
 - `iocalc-agent-env`: https://github.com/rivendale/iocalc-agent-env (public dual-license reference; verify current terms in that repo)
 
 ## Core Idea
