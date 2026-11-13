@@ -13,7 +13,7 @@ Reviewed against the official SDK docs and upstream releases on 2026-07-25:
 - [Hooks](https://code.claude.com/docs/en/agent-sdk/hooks)
 - [Secure deployment](https://code.claude.com/docs/en/agent-sdk/secure-deployment)
 
-The TypeScript example also pins `@hono/node-server` `2.0.10` through an npm
+The TypeScript example also pins `@hono/node-server` `2.1.6` through an npm
 override because the SDK's MCP dependency otherwise resolves versions covered
 by published path-traversal and WebSocket denial-of-service advisories. The
 adapter does not enable MCP in this milestone, but the installed tree should
